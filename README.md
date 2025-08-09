@@ -148,8 +148,8 @@ $results = $this->cityService->getCity(
 );
 ```
 
-## Example .env overrides
-If you wants to customize:
+## Optional .env overrides
+If you want to customize API prefix:
 ```env
 PSGC_API_PREFIX=geo
 ```
