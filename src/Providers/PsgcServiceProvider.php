@@ -5,7 +5,9 @@ namespace Schoolees\Psgc\Providers;
 use Illuminate\Support\ServiceProvider;
 use Schoolees\Psgc\Console\InstallPsgcCommand;
 use Schoolees\Psgc\Console\Commands\MakePsgcModels;
-use Schoolees\Psgc\Console\Commands\PublishPsgcRoutes; // one-step publish+append
+use Schoolees\Psgc\Console\Commands\PublishPsgcRoutes;
+
+// one-step publish+append
 
 class PsgcServiceProvider extends ServiceProvider
 {
@@ -44,7 +46,7 @@ class PsgcServiceProvider extends ServiceProvider
                 MakePsgcModels::class,
                 PublishPsgcRoutes::class, // one-step: publishes routes + appends to routes/api.php
                 \Schoolees\Psgc\Console\InstallPsgcCommand::class,
-                TestPublishCommand::class,
+                \Schoolees\Psgc\Console\TestPublishCommand::class,
             ]);
         }
     }
