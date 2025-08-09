@@ -31,27 +31,31 @@ Require the package via Composer:
 ```bash
 composer require schoolees/laravel-psgc
 ```
-Publish Package Assets:
+Publish package assets:
 ```bash
 php artisan vendor:publish --tag=psgc-config
 ```
-Publish Package Routes:
+Publish seeder:
+```bash
+php artisan vendor:publish --tag=psgc-seeders
+```
+Migrate and seed:
+```bash
+php artisan psgc:install --seed
+```
+Optional: Publish Package Routes:
 ```bash
 php artisan psgc:publish-routes
 # or overwrite if re-running:
 php artisan psgc:publish-routes --force
 ```
-Generate PSGC models:
+Optional: Generate PSGC models:
 ```php
 php artisan make:psgc-models
 
 //Options
 php artisan make:psgc-models --force //Overwrite existing models
 php artisan make:psgc-models --softdeletes //Include SoftDeletes trait
-```
-Migrate and seed:
-```bash
-php artisan psgc:install --seed
 ```
 
 ## 📡 API Endpoints
