@@ -23,7 +23,7 @@ class CityController
                 (int) request()->input('offset', 0)
             );
 
-            return Utility::dataTableResponse(CityResource::collection($collection));
+            return Utility::dataTableResponse(CityResources::collection($collection));
         } catch (Exception $e) {
             return Utility::jsonException($e);
         }

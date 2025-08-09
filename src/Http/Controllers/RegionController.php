@@ -23,7 +23,7 @@ class RegionController
                 (int) request()->input('offset', 0)
             );
 
-            return Utility::dataTableResponse(RegionResource::collection($collection));
+            return Utility::dataTableResponse(RegionResources::collection($collection));
         } catch (Exception $e) {
             return Utility::jsonException($e);
         }

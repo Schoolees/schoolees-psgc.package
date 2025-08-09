@@ -23,7 +23,7 @@ class ProvinceController
                 (int) request()->input('offset', 0)
             );
 
-            return Utility::dataTableResponse(ProvinceResource::collection($collection));
+            return Utility::dataTableResponse(ProvinceResources::collection($collection));
         } catch (Exception $e) {
             return Utility::jsonException($e);
         }

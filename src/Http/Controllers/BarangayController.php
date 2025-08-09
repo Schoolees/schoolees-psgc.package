@@ -23,7 +23,7 @@ class BarangayController
                 (int) request()->input('offset', 0)
             );
 
-            return Utility::dataTableResponse(BarangayResource::collection($collection));
+            return Utility::dataTableResponse(BarangayResources::collection($collection));
         } catch (Exception $e) {
             return Utility::jsonException($e);
         }
