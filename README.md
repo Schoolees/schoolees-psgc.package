@@ -43,17 +43,19 @@ Migrate and seed:
 ```bash
 php artisan psgc:install --seed
 ```
-Optional: Publish Package Routes:
+Optional: Publish package routes:
 ```bash
 php artisan psgc:publish-routes
 # or overwrite if re-running:
 php artisan psgc:publish-routes --force
 ```
+Optional: Publish resources:
+```bash
+php artisan vendor:publish --tag=psgc-resources
+```
 Optional: Generate PSGC models:
-```php
+```bash
 php artisan make:psgc-models
-
-//Options
 php artisan make:psgc-models --force //Overwrite existing models
 php artisan make:psgc-models --softdeletes //Include SoftDeletes trait
 ```
