@@ -1,0 +1,92 @@
+[
+  {
+    "code": "1300000000",
+    "name": "National Capital Region (NCR)",
+    "short_name": "National Capital Region (NCR)"
+  },
+  {
+    "code": "1400000000",
+    "name": "Cordillera Administrative Region (CAR)",
+    "short_name": "Cordillera Administrative Region (CAR)"
+  },
+  {
+    "code": "100000000",
+    "name": "Region I (Ilocos Region)",
+    "short_name": "Region I (Ilocos Region)"
+  },
+  {
+    "code": "200000000",
+    "name": "Region II (Cagayan Valley)",
+    "short_name": "Region II (Cagayan Valley)"
+  },
+  {
+    "code": "300000000",
+    "name": "Region III (Central Luzon)",
+    "short_name": "Region III (Central Luzon)"
+  },
+  {
+    "code": "400000000",
+    "name": "Region IV-A (CALABARZON)",
+    "short_name": "Region IV-A (CALABARZON)"
+  },
+  {
+    "code": "1700000000",
+    "name": "MIMAROPA Region",
+    "short_name": "MIMAROPA Region"
+  },
+  {
+    "code": "500000000",
+    "name": "Region V (Bicol Region)",
+    "short_name": "Region V (Bicol Region)"
+  },
+  {
+    "code": "600000000",
+    "name": "Region VI (Western Visayas)",
+    "short_name": "Region VI (Western Visayas)"
+  },
+  {
+    "code": "1800000000",
+    "name": "Negros Island Region (NIR)",
+    "short_name": "Negros Island Region (NIR)"
+  },
+  {
+    "code": "700000000",
+    "name": "Region VII (Central Visayas)",
+    "short_name": "Region VII (Central Visayas)"
+  },
+  {
+    "code": "800000000",
+    "name": "Region VIII (Eastern Visayas)",
+    "short_name": "Region VIII (Eastern Visayas)"
+  },
+  {
+    "code": "900000000",
+    "name": "Region IX (Zamboanga Peninsula)",
+    "short_name": "Region IX (Zamboanga Peninsula)"
+  },
+  {
+    "code": "1000000000",
+    "name": "Region X (Northern Mindanao)",
+    "short_name": "Region X (Northern Mindanao)"
+  },
+  {
+    "code": "1100000000",
+    "name": "Region XI (Davao Region)",
+    "short_name": "Region XI (Davao Region)"
+  },
+  {
+    "code": "1200000000",
+    "name": "Region XII (SOCCSKSARGEN)",
+    "short_name": "Region XII (SOCCSKSARGEN)"
+  },
+  {
+    "code": "1600000000",
+    "name": "Region XIII (Caraga)",
+    "short_name": "Region XIII (Caraga)"
+  },
+  {
+    "code": "1900000000",
+    "name": "Bangsamoro Autonomous Region In Muslim Mindanao (BARMM)",
+    "short_name": "Bangsamoro Autonomous Region In Muslim Mindanao (BARMM)"
+  }
+]
