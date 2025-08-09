@@ -34,7 +34,7 @@ composer require schoolees/laravel-psgc
 
 Publish Package Assets:
 ```bash
-php artisan vendor:publish --tag=psgc
+php artisan vendor:publish --tag=psgc-config
 ```
 
 Run Migrations:
