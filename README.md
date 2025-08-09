@@ -37,7 +37,7 @@ php artisan vendor:publish --tag=psgc-config
 ```
 Migrate and seed:
 ```bash
-sail artisan psgc:install --seed
+php artisan psgc:install --seed
 ```
 
 ## 📡 API Endpoints
