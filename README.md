@@ -8,7 +8,6 @@ A Laravel package for handling **Philippine Standard Geographic Code (PSGC)** da
 
 It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent models**, **services**, **controllers**, **API resources**, and **routes** following clean Laravel architecture.
 
----
 
 ## 📦 Features
 - 🇵🇭 Full PSGC database structure (Regions, Provinces, Cities, Barangays)
@@ -20,35 +19,28 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 - 🚀 Artisan command to regenerate PSGC models
 - 📡 Ready-to-use API routes for all PSGC endpoints
 
+
 ## 📋 Requirements
 - PHP >= 8.1
 - Laravel >= 10.x (tested on Laravel 12)
 - MySQL / MariaDB
 
-## ⚙️ Installation
 
+## ⚙️ Installation
 Require the package via Composer:
 ```bash
 composer require schoolees/laravel-psgc
 ```
-
 Publish Package Assets:
 ```bash
 php artisan vendor:publish --tag=psgc-config
 ```
-
-Run Migrations:
+Migrate and seed:
 ```bash
-php artisan migrate
-```
-
-Seed PSGC Data
-```bash
-php artisan db:seed --class=PSGCSeeder
+sail artisan psgc:install --seed
 ```
 
 ## 📡 API Endpoints
-
 Registered Routes:
 ```php
 // Regions
@@ -71,7 +63,6 @@ Route::controller(BarangayController::class)->prefix('/barangays')->group(functi
     Route::get('', 'show');
 });
 ```
-
 Example Request:
 ```php
 # Get all Regions
@@ -86,7 +77,6 @@ GET /api/psgc/cities?province_code=133900000
 # Get Barangays in City 133900000
 GET /api/psgc/barangays?city_code=133900000
 ```
-
 Example JSON Response:
 ```json
 {
@@ -110,7 +100,6 @@ Example JSON Response:
 ```
 
 ## 🛠 Artisan Commands
-
 Generate PSGC models:
 ```php
 php artisan make:psgc-models
@@ -155,8 +144,10 @@ PSGC_API_PREFIX=geo
 ```
 Will change /psgc/regions -> /geo/regions.
 
+
 ## 📜 License
 This package is open-sourced software licensed under the MIT license.
+
 
 ## 🏢 About
 Developed & maintained by Schoolees as part of the Schoolees Educational Suite.
