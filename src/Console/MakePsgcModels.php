@@ -7,7 +7,6 @@ use Illuminate\Filesystem\Filesystem;
 
 class MakePsgcModels extends Command
 {
-    // 👇 make sure this is not empty and unique
     protected $signature = 'make:psgc-models
         {--force : Overwrite existing files if present}
         {--softdeletes : Include SoftDeletes trait in generated models (off by default)}';
