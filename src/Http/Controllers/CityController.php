@@ -4,7 +4,7 @@ namespace Schoolees\Psgc\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Schoolees\Psgc\Http\Resources\CityResource;
+use Schoolees\Psgc\Http\Resources\CityResources;
 use Schoolees\Psgc\Services\CityService;
 use Schoolees\Psgc\Support\Utility;
 
