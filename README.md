@@ -31,7 +31,7 @@ Require the package via Composer:
 ```bash
 composer require schoolees/laravel-psgc
 ```
-Publish package assets:
+Publish config:
 ```bash
 php artisan vendor:publish --tag=psgc-config
 ```
@@ -57,43 +57,19 @@ php artisan make:psgc-models
 php artisan make:psgc-models --force //Overwrite existing models
 php artisan make:psgc-models --softdeletes //Include SoftDeletes trait
 ```
-
-## 📡 API Endpoints
-Registered Routes:
-```php
-// Regions
-Route::controller(RegionController::class)->prefix('/regions')->group(function () {
-    Route::get('', 'show');
-});
-
-// Provinces
-Route::controller(ProvinceController::class)->prefix('/provinces')->group(function () {
-    Route::get('', 'show');
-});
-
-// Cities
-Route::controller(CityController::class)->prefix('/cities')->group(function () {
-    Route::get('', 'show');
-});
-
-// Barangays
-Route::controller(BarangayController::class)->prefix('/barangays')->group(function () {
-    Route::get('', 'show');
-});
-```
 Example Request:
 ```php
 # Get all Regions
-GET /api/psgc/regions
+GET /psgc/regions
 
 # Get Provinces in Region 13
-GET /api/psgc/provinces?region_code=130000000
+GET /psgc/provinces?region_code=130000000
 
 # Get Cities in Province 133900000
-GET /api/psgc/cities?province_code=133900000
+GET /psgc/cities?province_code=133900000
 
 # Get Barangays in City 133900000
-GET /api/psgc/barangays?city_code=133900000
+GET /psgc/barangays?city_code=133900000
 ```
 Example JSON Response:
 ```json
