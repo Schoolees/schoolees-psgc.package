@@ -4,6 +4,7 @@ namespace Schoolees\Psgc\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Schoolees\Psgc\Console\InstallPsgcCommand;
+use Schoolees\Psgc\Console\Commands\MakePsgcModels;
 
 class PsgcServiceProvider extends ServiceProvider
 {
@@ -67,6 +68,7 @@ class PsgcServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallPsgcCommand::class,
+                MakePsgcModels::class,
                 \Schoolees\Psgc\Console\TestPublishCommand::class, // new test command
             ]);
         }
