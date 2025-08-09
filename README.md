@@ -35,6 +35,20 @@ Publish Package Assets:
 ```bash
 php artisan vendor:publish --tag=psgc-config
 ```
+Publish Package Routes:
+```bash
+php artisan psgc:publish-routes
+# or overwrite if re-running:
+php artisan psgc:publish-routes --force
+```
+Generate PSGC models:
+```php
+php artisan make:psgc-models
+
+//Options
+php artisan make:psgc-models --force //Overwrite existing models
+php artisan make:psgc-models --softdeletes //Include SoftDeletes trait
+```
 Migrate and seed:
 ```bash
 php artisan psgc:install --seed
@@ -97,16 +111,6 @@ Example JSON Response:
     "province_code": "133900000"
   }
 }
-```
-
-## 🛠 Artisan Commands
-Generate PSGC models:
-```php
-php artisan make:psgc-models
-
-//Options
-php artisan make:psgc-models --force //Overwrite existing models
-php artisan make:psgc-models --softdeletes //Include SoftDeletes trait
 ```
 
 ## 🔍 Searchable Fields
