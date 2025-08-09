@@ -25,7 +25,7 @@ class PsgcServiceProvider extends ServiceProvider
                 'prefix'     => config('psgc.api_prefix', 'psgc'),
                 'middleware' => config('psgc.middleware', ['api']),
             ], function () {
-                require __DIR__ . '/../../routes/api.php';
+                require __DIR__ . '/../../routes/api.php'; // <- unprefixed file
             });
         }
 

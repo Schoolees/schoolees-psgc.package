@@ -6,9 +6,8 @@ use Schoolees\Psgc\Http\Controllers\ProvinceController;
 use Schoolees\Psgc\Http\Controllers\CityController;
 use Schoolees\Psgc\Http\Controllers\BarangayController;
 
-Route::prefix(config('psgc.route_prefix', 'psgc'))->group(function () {
-    Route::controller(RegionController::class)->prefix('/regions')->group(fn () => Route::get('', 'show'));
-    Route::controller(ProvinceController::class)->prefix('/provinces')->group(fn () => Route::get('', 'show'));
-    Route::controller(CityController::class)->prefix('/cities')->group(fn () => Route::get('', 'show'));
-    Route::controller(BarangayController::class)->prefix('/barangays')->group(fn () => Route::get('', 'show'));
-});
+// no Route::prefix() here — provider adds it
+Route::get('regions',   [RegionController::class,   'show']);
+Route::get('provinces', [ProvinceController::class, 'show']);
+Route::get('cities',    [CityController::class,     'show']);
+Route::get('barangays', [BarangayController::class, 'show']);
