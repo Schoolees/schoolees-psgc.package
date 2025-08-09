@@ -56,8 +56,9 @@ php artisan vendor:publish --tag=psgc-resources
 Optional: Generate PSGC models:
 ```bash
 php artisan make:psgc-models
-php artisan make:psgc-models --force //Overwrite existing models
-php artisan make:psgc-models --softdeletes //Include SoftDeletes trait
+# Optional
+php artisan make:psgc-models --force # Overwrite existing models
+php artisan make:psgc-models --softdeletes # Include SoftDeletes trait
 ```
 Example Request:
 ```php
