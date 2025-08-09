@@ -148,6 +148,13 @@ $results = $this->cityService->getCity(
 );
 ```
 
+## Example .env overrides
+If you wants to customize:
+```env
+PSGC_API_PREFIX=geo
+```
+Will change /psgc/regions -> /geo/regions.
+
 ## 📜 License
 This package is open-sourced software licensed under the MIT license.
 
