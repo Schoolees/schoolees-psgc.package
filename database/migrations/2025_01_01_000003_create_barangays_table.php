@@ -12,8 +12,11 @@ return new class extends Migration {
             $table->string('name');
             $table->string('city_code')->index();
             $table->timestamps();
+
+            $table->index(['city_code', 'name']);
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists(config('psgc.tables.barangays', 'barangays'));

@@ -12,6 +12,8 @@ return new class extends Migration {
             $table->string('name');
             $table->string('region_code')->index();
             $table->timestamps();
+
+            $table->index(['region_code', 'name']);
         });
     }
 

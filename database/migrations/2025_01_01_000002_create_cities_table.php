@@ -11,11 +11,13 @@ return new class extends Migration {
             $table->string('code')->primary();
             $table->string('name');
             $table->string('region_code')->index();
-            // NOTE: HUC/ICC cities have no province -> must be nullable
+            // HUC/ICC can be province-independent
             $table->string('province_code')->nullable()->index();
-            $table->boolean('is_city')->default(true);
-            $table->string('city_class')->nullable();
+            $table->boolean('is_city')->default(true)->index();
+            $table->string('city_class')->nullable()->index();
             $table->timestamps();
+
+            $table->index(['region_code', 'province_code', 'name']);
         });
     }
 

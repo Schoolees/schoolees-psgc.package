@@ -12,8 +12,11 @@ return new class extends Migration {
             $table->string('name');
             $table->string('short_name')->nullable();
             $table->timestamps();
+
+            $table->index('name');
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists(config('psgc.tables.regions', 'regions'));
