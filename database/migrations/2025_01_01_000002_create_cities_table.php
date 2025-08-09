@@ -11,12 +11,14 @@ return new class extends Migration {
             $table->string('code')->primary();
             $table->string('name');
             $table->string('region_code')->index();
-            $table->string('province_code')->index();
+            // NOTE: HUC/ICC cities have no province -> must be nullable
+            $table->string('province_code')->nullable()->index();
             $table->boolean('is_city')->default(true);
             $table->string('city_class')->nullable();
             $table->timestamps();
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists(config('psgc.tables.cities', 'cities'));

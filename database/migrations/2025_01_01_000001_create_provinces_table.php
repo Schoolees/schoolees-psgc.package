@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create(config('psgc.tables.provinces', 'provinces'), function (Blueprint $table) {
-            $table->string('code')->primary();
-            $table->string('name');
-            $table->string('region_code')->index();
-            $table->timestamps();
+        Schema::table(config('psgc.tables.cities', 'cities'), function (Blueprint $table) {
+            $table->string('province_code')->nullable()->change();
         });
     }
+
     public function down(): void
     {
-        Schema::dropIfExists(config('psgc.tables.provinces', 'provinces'));
+        Schema::table(config('psgc.tables.cities', 'cities'), function (Blueprint $table) {
+            $table->string('province_code')->nullable(false)->change();
+        });
     }
 };

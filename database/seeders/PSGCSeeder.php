@@ -22,26 +22,67 @@ class PSGCSeeder extends Seeder
     protected function seed(string $table, string $path, array $keys, array $updates): void
     {
         $rows = $this->readJsonArray($path);
+
+        // Normalize city rows (province_code can be null for HUC/ICC)
+        if ($table === config('psgc.tables.cities', 'cities')) {
+            $this->normalizeCities($rows);
+        }
+
         $now = now();
-        foreach ($rows as &$r) { $r['created_at'] = $now; $r['updated_at'] = $now; }
+        foreach ($rows as &$r) {
+            $r['created_at'] = $now;
+            $r['updated_at'] = $now;
+        }
+        unset($r);
+
         DB::table($table)->upsert($rows, $keys, $updates);
     }
 
     protected function seedLarge(string $table, string $path, array $keys, array $updates): void
     {
         $rows = $this->readJsonArray($path);
+
+        // If we ever use seedLarge for cities, still normalize
+        if ($table === config('psgc.tables.cities', 'cities')) {
+            $this->normalizeCities($rows);
+        }
+
         $now = now();
         foreach (array_chunk($rows, 3000) as $chunk) {
-            foreach ($chunk as &$r) { $r['created_at'] = $now; $r['updated_at'] = $now; }
+            foreach ($chunk as &$r) {
+                $r['created_at'] = $now;
+                $r['updated_at'] = $now;
+            }
+            unset($r);
+
             DB::table($table)->upsert($chunk, $keys, $updates);
         }
     }
 
+    /**
+     * Force null province_code for HUC/ICC and empty values.
+     */
+    protected function normalizeCities(array &$rows): void
+    {
+        foreach ($rows as &$r) {
+            $pc = $r['province_code'] ?? null;
+
+            if ($pc === '' || $pc === '0') {
+                $r['province_code'] = null;
+            }
+
+            if (isset($r['city_class']) && in_array($r['city_class'], ['HUC','ICC'], true)) {
+                $r['province_code'] = null;
+            }
+        }
+        unset($r);
+    }
+
     protected function readJsonArray(string $path): array
     {
-        $relativePath = ltrim($path, '/');
+        $relativePath = ltrim($path, '/'); // e.g. "psgc/regions.json"
 
-        $resourcePath = base_path('resources/'.$relativePath);
+        $resourcePath = base_path('resources/' . $relativePath);
         if (file_exists($resourcePath)) {
             $data = json_decode(file_get_contents($resourcePath), true);
             if (json_last_error() !== JSON_ERROR_NONE) {
