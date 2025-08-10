@@ -27,7 +27,7 @@ class InstallPsgcCommand extends Command
         }
 
         $this->info('✅ PSGC installed successfully.');
-        $this->info('📌 Endpoints available at: /api/' . config('psgc.api_prefix', 'psgc') . '/*');
+        $this->info('📌 Endpoints available at: /' . config('psgc.api_prefix', 'psgc') . '/*');
 
         return self::SUCCESS;
     }
