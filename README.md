@@ -12,8 +12,8 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 ## 📦 Features
 - 🇵🇭 Full PSGC database structure (Regions, Provinces, Cities, Barangays)
 - 📂 JSON PSGC dataset in `resources/psgc/`
-- 🗄 Database migrations & seeders for initial data load
-- 🧩 Eloquent models with relationships & searchable fields
+- 🗄 Database migrations and seeders for an initial data load
+- 🧩 Eloquent models with relationships and searchable fields
 - 🛠 Service layer for clean business logic
 - 🌐 REST API controllers & resources
 - 🚀 Artisan command to regenerate PSGC models
@@ -31,7 +31,7 @@ Require the package via Composer:
 ```bash
 composer require schoolees/laravel-psgc
 ```
-Quick install:
+Quick installation:
 ```bash
 php artisan psgc:install --seed
 ```
@@ -39,7 +39,7 @@ Optional: Publish config only:
 ```bash
 php artisan vendor:publish --tag=psgc-config
 ```
-Optional: Publish seeder only:
+Optional: Publish seeders only:
 ```bash
 php artisan vendor:publish --tag=psgc-seeders
 ```
@@ -96,10 +96,11 @@ Example JSON Response:
 }
 ```
 
+
 ## 🔍 Searchable Fields
 Each model has a getSearchable() method to define searchable columns for filtering via API.
 
-Example for City model:
+Example for a City model:
 ```php
 public function getSearchable(): array
 {
@@ -109,6 +110,7 @@ public function getSearchable(): array
     ];
 }
 ```
+
 
 ## 🧩 Service Layer
 The package follows the Service-Controller-Resource pattern for clean, maintainable code.
@@ -124,12 +126,12 @@ $results = $this->cityService->getCity(
 );
 ```
 
+
 ## Optional .env overrides
 To customize API prefix:
 ```env
-PSGC_API_PREFIX=geo
+PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 ```
-Will change /psgc/regions -> /geo/regions.
 
 
 ## 📜 License
