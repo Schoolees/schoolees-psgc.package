@@ -31,19 +31,19 @@ Require the package via Composer:
 ```bash
 composer require schoolees/laravel-psgc
 ```
-Publish config:
-```bash
-php artisan vendor:publish --tag=psgc-config
-```
-Publish seeder:
-```bash
-php artisan vendor:publish --tag=psgc-seeders
-```
-Migrate and seed:
+Quick install:
 ```bash
 php artisan psgc:install --seed
 ```
-Optional: Publish package routes:
+Optional: Publish config only:
+```bash
+php artisan vendor:publish --tag=psgc-config
+```
+Optional: Publish seeder only:
+```bash
+php artisan vendor:publish --tag=psgc-seeders
+```
+Optional: Publish routes:
 ```bash
 php artisan psgc:publish-routes
 # or overwrite if re-running:
@@ -138,6 +138,20 @@ This package is open-sourced software licensed under the MIT license.
 
 ## 🏢 About
 Developed & maintained by Schoolees as part of the Schoolees Educational Suite.
+
+
+## 📊 Data Source
+This package uses the official **Philippine Standard Geographic Code (PSGC)** dataset published by the **Philippine Statistics Authority (PSA)**.
+
+Latest Dataset Used:
+[📄 PSGC 2Q 2025 Publication Datafile (Excel)](https://psa.gov.ph/system/files/scd/PSGC-2Q-2025-Publication-Datafile.xlsx)
+
+Attribution:
+Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
+
+Update Frequency:
+Quarterly (based on PSA publication schedule)
+
 
 
 
