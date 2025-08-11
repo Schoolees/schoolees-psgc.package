@@ -58,8 +58,8 @@ php artisan make:psgc-models --force # Overwrite existing models
 php artisan make:psgc-models --softdeletes # Include SoftDeletes trait
 ```
 
-### Example Request:
-```http
+**Example Request:**
+```php
 # Get all Regions
 GET /psgc/regions
 
@@ -72,7 +72,7 @@ GET /psgc/cities?province_code=133900000
 # Get Barangays in City 133900000
 GET /psgc/barangays?city_code=133900000
 ```
-### Example JSON Response:
+**Example JSON Response:**
 ```json
 {
   "code": 200,
@@ -94,21 +94,21 @@ GET /psgc/barangays?city_code=133900000
 }
 ```
 
-### Filtering and Searching
+**Filtering and Searching**
 
 You can filter results by passing query parameters. Refer to the `getSearchable()` method on each model for available filterable fields.
 
 **Example: Get Provinces in Region 13**
-```http
+```php
 GET /psgc/provinces?region_code=130000000
 ```
 
 **Example: Search for a city by name**
-```http
+```php
 GET /psgc/cities?name=Manila
 ```
 
-### Example JSON Response (for a list endpoint)
+**Example JSON Response (for a list endpoint)**
 ```json
 {
   "code": 200,
