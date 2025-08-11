@@ -28,41 +28,38 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 
 
 ## ⚙️ Installation
-Require the package via Composer:
+**Require the package via Composer:**
 ```bash
 composer require schoolees/laravel-psgc
 ```
-Quick installation:
+**Quick installation:**
 ```bash
 php artisan psgc:install --seed
 ```
-Optional: Publish config only:
+**Publishing assets (optional):**
 ```bash
+# Config
 php artisan vendor:publish --tag=psgc-config
-```
-Optional: Publish seeders only:
-```bash
+
+# Seeders
 php artisan vendor:publish --tag=psgc-seeders
-```
-Optional: Publish routes:
-```bash
+
+# Routes
 php artisan psgc:publish-routes
-# or overwrite if re-running:
-php artisan psgc:publish-routes --force
-```
-Optional: Publish resources:
-```bash
+php artisan psgc:publish-routes --force # Overwrite if re-running
+
+# Resources
 php artisan vendor:publish --tag=psgc-resources
 ```
-Optional: Generate PSGC models:
+**Generate PSGC models (optional):**
 ```bash
 php artisan make:psgc-models
-# Optional
 php artisan make:psgc-models --force # Overwrite existing models
 php artisan make:psgc-models --softdeletes # Include SoftDeletes trait
 ```
-Example Request:
-```php
+
+### Example Request:
+```http
 # Get all Regions
 GET /psgc/regions
 
@@ -75,7 +72,7 @@ GET /psgc/cities?province_code=133900000
 # Get Barangays in City 133900000
 GET /psgc/barangays?city_code=133900000
 ```
-Example JSON Response:
+### Example JSON Response:
 ```json
 {
   "code": 200,
@@ -97,11 +94,46 @@ Example JSON Response:
 }
 ```
 
+### Filtering and Searching
+
+You can filter results by passing query parameters. Refer to the `getSearchable()` method on each model for available filterable fields.
+
+**Example: Get Provinces in Region 13**
+```http
+GET /psgc/provinces?region_code=130000000
+```
+
+**Example: Search for a city by name**
+```http
+GET /psgc/cities?name=Manila
+```
+
+### Example JSON Response (for a list endpoint)
+```json
+{
+  "code": 200,
+  "draw": 1,
+  "recordsFiltered": 17,
+  "recordsTotal": 17,
+  "recordsPerPage": 10,
+  "data": [
+    {
+      "code": "133900000",
+      "name": "City of Manila",
+      "province_code": "133900000",
+      "region_code": "130000000"
+    }
+  ],
+  "filters": {
+    "province_code": "133900000"
+  }
+}
+```
 
 ## 🔍 Searchable Fields
-Each model has a getSearchable() method to define searchable columns for filtering via API.
+Each model has a `getSearchable()` method to define searchable columns for filtering via API.
 
-Example for a City model:
+**Example for a City model:**
 ```php
 public function getSearchable(): array
 {
@@ -112,11 +144,10 @@ public function getSearchable(): array
 }
 ```
 
-
 ## 🧩 Service Layer
 The package follows the Service-Controller-Resource pattern for clean, maintainable code.
 
-Example:
+**Example:**
 ```php
 $results = $this->cityService->getCity(
     request()->all(),
@@ -127,21 +158,17 @@ $results = $this->cityService->getCity(
 );
 ```
 
-
 ## Optional .env overrides
-To customize API prefix:
+**To customize API prefix:**
 ```env
 PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 ```
 
-
 ## 📜 License
 This package is open-sourced software licensed under the MIT license.
 
-
 ## 🏢 About
 Developed & maintained by Schoolees as part of the Schoolees Educational Suite.
-
 
 ## 📊 Data Source
 This package uses the official **Philippine Standard Geographic Code (PSGC)** dataset published by the **Philippine Statistics Authority (PSA)**.
