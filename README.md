@@ -8,6 +8,7 @@ A Laravel package for handling **Philippine Standard Geographic Code (PSGC)** da
 
 It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent models**, **services**, **controllers**, **API resources**, and **routes** following clean Laravel architecture.
 
+---
 
 ## 📦 Features
 - 🇵🇭 Full PSGC database structure (Regions, Provinces, Cities, Barangays)
