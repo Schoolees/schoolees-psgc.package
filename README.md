@@ -108,28 +108,6 @@ GET /psgc/provinces?region_code=130000000
 GET /psgc/cities?name=Manila
 ```
 
-**Example JSON Response (for a list endpoint)**
-```json
-{
-  "code": 200,
-  "draw": 1,
-  "recordsFiltered": 17,
-  "recordsTotal": 17,
-  "recordsPerPage": 10,
-  "data": [
-    {
-      "code": "133900000",
-      "name": "City of Manila",
-      "province_code": "133900000",
-      "region_code": "130000000"
-    }
-  ],
-  "filters": {
-    "province_code": "133900000"
-  }
-}
-```
-
 ## 🔍 Searchable Fields
 Each model has a `getSearchable()` method to define searchable columns for filtering via API.
 
