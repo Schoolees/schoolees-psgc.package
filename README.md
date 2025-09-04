@@ -1,4 +1,4 @@
-# 📍PSGC Laravel Package
+# 📍🇵🇭 PSGC Laravel Package
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/schoolees/laravel-psgc.svg?style=flat-square)](https://packagist.org/packages/schoolees/laravel-psgc)
 [![Total Downloads](https://img.shields.io/packagist/dt/schoolees/laravel-psgc.svg?style=flat-square)](https://packagist.org/packages/schoolees/laravel-psgc)
@@ -11,14 +11,14 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 ---
 
 ## 📦 Features
-- 🇵🇭 Full PSGC database structure (Regions, Provinces, Cities, Barangays)
-- 📂 JSON PSGC dataset in `resources/psgc/`
-- 🗄 Database migrations and seeders for an initial data load
-- 🧩 Eloquent models with relationships and searchable fields
-- 🛠 Service layer for clean business logic
-- 🌐 REST API controllers & resources
-- 🚀 Artisan command to regenerate PSGC models
-- 📡 Ready-to-use API routes for all PSGC endpoints
+- Full PSGC database structure (Regions, Provinces, Cities, Barangays)
+- JSON PSGC dataset in `resources/psgc/`
+- Database migrations and seeders for an initial data load
+- Eloquent models with relationships and searchable fields
+- Service layer for clean business logic
+- REST API controllers & resources
+- Artisan command to regenerate PSGC models
+- Ready-to-use API routes for all PSGC endpoints
 
 
 ## 📋 Requirements
