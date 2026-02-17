@@ -33,11 +33,6 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 composer require schoolees/laravel-psgc
 ```
 
-**Run package tests (repository development):**
-```bash
-composer test
-```
-
 **Quick installation:**
 ```bash
 php artisan psgc:install --seed
@@ -179,7 +174,6 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 
 
 
