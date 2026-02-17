@@ -33,6 +33,20 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 composer require schoolees/laravel-psgc
 ```
 
+## 🚀 Automated Versioning & Packagist Publish
+This repo uses **Conventional Commits** + **Release Please** for automatic versioning.
+
+- Push commits to `main` using conventional format (example: `fix(seeder): respect resources_path`).
+- GitHub Action `.github/workflows/release.yml` opens/updates a release PR.
+- When that PR is merged, it creates a Git tag + GitHub Release automatically.
+- After release creation, the workflow notifies Packagist to fetch the new tag.
+
+Configure these GitHub repository secrets:
+- `PACKAGIST_USERNAME`: your Packagist username
+- `PACKAGIST_TOKEN`: API token from Packagist account settings
+
+If secrets are missing, release/tag creation still works, but Packagist notification is skipped.
+
 **Run package tests (repository development):**
 ```bash
 composer test
@@ -179,7 +193,6 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 
 
 

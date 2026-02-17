@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Notify Packagist
+        if: steps.release.outputs.releases_created == 'true'
+        env:
+          PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        run: |
+          if [ -z "${PACKAGIST_USERNAME}" ] || [ -z "${PACKAGIST_TOKEN}" ]; then
+            echo "Packagist secrets are not configured. Skipping notification."
+            exit 0
+          fi
+
+          curl -fsS -X POST \
+            "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/Schoolees/schoolees-psgc.package"}}'
+
+          echo "Packagist update notification sent."
+

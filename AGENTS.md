@@ -41,6 +41,8 @@ composer test
 - Use Conventional Commits for all new commits.
 - Format: `type(scope): short summary` (examples: `feat(test): add regions endpoint test`, `fix(seeder): honor resources_path config`).
 - Common types: `feat`, `fix`, `test`, `docs`, `refactor`, `chore`.
+- Automated releases are handled by Release Please via `.github/workflows/release.yml`; do not create manual version tags.
+- Keep commit history clean and conventional so automated semantic versioning stays accurate.
 - PRs should include:
   - What changed and why (especially for migrations, routes, and config defaults).
   - Notes for dataset updates (file(s) under `resources/psgc/` plus the PSA source/version, also update `README.md`).
