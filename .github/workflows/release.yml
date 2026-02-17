@@ -16,6 +16,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validate release token
+        env:
+          RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        run: |
+          if [ -z "${RELEASE_PLEASE_TOKEN}" ]; then
+            echo "RELEASE_PLEASE_TOKEN is missing."
+            echo "Create a repo secret named RELEASE_PLEASE_TOKEN with a valid PAT."
+            exit 1
+          fi
+
+          status="$(curl -s -o /tmp/gh-user.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${RELEASE_PLEASE_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/user)"
+
+          if [ "${status}" != "200" ]; then
+            echo "RELEASE_PLEASE_TOKEN is invalid for GitHub API (/user), HTTP ${status}."
+            echo "Ensure token is valid, has required scopes/permissions, and SSO is authorized if your org requires it."
+            cat /tmp/gh-user.json || true
+            exit 1
+          fi
+
       - name: Run release-please
         id: release
         uses: googleapis/release-please-action@v4

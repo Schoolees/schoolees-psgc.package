@@ -53,6 +53,7 @@ Required GitHub repository settings:
 - Enable **Allow GitHub Actions to create and approve pull requests**
 
 If the "Allow GitHub Actions to create and approve pull requests" option is disabled by org policy, `RELEASE_PLEASE_TOKEN` is required.
+The workflow now validates this token first and fails with a clear error if credentials are invalid.
 
 **Run package tests (repository development):**
 ```bash
@@ -200,7 +201,6 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 
 
 
