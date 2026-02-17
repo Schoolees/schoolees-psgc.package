@@ -26,6 +26,9 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 - Laravel >= 10.x (tested on Laravel 12)
 - MySQL / MariaDB
 
+## 🤝 Contributing
+Repository development/testing notes are in `CONTRIBUTING.md`.
+
 
 ## ⚙️ Installation
 **Require the package via Composer:**
@@ -174,6 +177,5 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 
 
