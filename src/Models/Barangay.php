@@ -9,12 +9,16 @@ class Barangay extends Model
 {
     use HasFactory;
 
-    protected $table = 'barangays';
     protected $primaryKey = 'code';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = ['code','name','city_code'];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.barangays', 'barangays');
+    }
 
     public function getSearchable(): array
     {

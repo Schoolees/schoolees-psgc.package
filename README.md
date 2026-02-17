@@ -32,6 +32,12 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 ```bash
 composer require schoolees/laravel-psgc
 ```
+
+**Run package tests (repository development):**
+```bash
+composer test
+```
+
 **Quick installation:**
 ```bash
 php artisan psgc:install --seed
@@ -127,7 +133,7 @@ The package follows the Service-Controller-Resource pattern for clean, maintaina
 
 **Example:**
 ```php
-$results = $this->cityService->getCity(
+$results = $this->cityService->getCities(
     request()->all(),
     request()->input('order_by', 'id'),
     request()->input('sort_by', 'desc'),
@@ -140,6 +146,20 @@ $results = $this->cityService->getCity(
 **To customize API prefix:**
 ```env
 PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
+```
+
+**Route strategy (important):**
+- Default: package auto-registers routes via service provider.
+- If you want to use published `routes/psgc.php`, disable package route registration to avoid duplicates:
+```php
+// config/psgc.php
+'register_package_routes' => false,
+```
+
+**Pagination safety override:**
+```php
+// config/psgc.php
+'max_limit' => 100, // caps ?limit=...
 ```
 
 ## 📜 License
@@ -159,9 +179,6 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
-
-
 
 
 

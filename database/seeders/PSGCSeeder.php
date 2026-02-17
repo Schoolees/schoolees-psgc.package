@@ -12,6 +12,10 @@ class PSGCSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
+            if ((bool) config('psgc.truncate_before_seed', true)) {
+                $this->truncateConfiguredTables();
+            }
+
             $this->seed(config('psgc.tables.regions','regions'),   'psgc/regions.json',   ['code'], ['name','short_name','updated_at']);
             $this->seed(config('psgc.tables.provinces','provinces'),'psgc/provinces.json',['code'], ['name','region_code','updated_at']);
             $this->seed(config('psgc.tables.cities','cities'),     'psgc/cities.json',    ['code'], ['name','region_code','province_code','is_city','city_class','updated_at']);
@@ -82,7 +86,8 @@ class PSGCSeeder extends Seeder
     {
         $relativePath = ltrim($path, '/'); // e.g. "psgc/regions.json"
 
-        $resourcePath = base_path('resources/' . $relativePath);
+        $resourceBasePath = rtrim((string) config('psgc.resources_path', base_path('resources/psgc')), '/');
+        $resourcePath = $resourceBasePath . '/' . basename($relativePath);
         if (file_exists($resourcePath)) {
             $data = json_decode(file_get_contents($resourcePath), true);
             if (json_last_error() !== JSON_ERROR_NONE) {
@@ -99,6 +104,20 @@ class PSGCSeeder extends Seeder
             return $data;
         }
 
-        throw new RuntimeException("Missing file: resources/{$relativePath} or storage/app/{$relativePath}");
+        throw new RuntimeException("Missing file: {$resourcePath} or storage/app/{$relativePath}");
+    }
+
+    protected function truncateConfiguredTables(): void
+    {
+        $tables = [
+            config('psgc.tables.barangays', 'barangays'),
+            config('psgc.tables.cities', 'cities'),
+            config('psgc.tables.provinces', 'provinces'),
+            config('psgc.tables.regions', 'regions'),
+        ];
+
+        foreach ($tables as $table) {
+            DB::table((string) $table)->truncate();
+        }
     }
 }

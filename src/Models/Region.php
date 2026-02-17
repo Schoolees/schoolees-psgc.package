@@ -9,12 +9,16 @@ class Region extends Model
 {
     use HasFactory;
 
-    protected $table = 'regions';
     protected $primaryKey = 'code';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = ['code','name','short_name'];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.regions', 'regions');
+    }
 
     public function getSearchable(): array
     {

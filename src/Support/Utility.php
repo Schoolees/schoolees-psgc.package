@@ -16,7 +16,7 @@ class Utility
 
         return [
             'code'            => 200,
-            'draw'            => (int) (request()->input('draw', 0) === 0 ? 0 : (int) request()->input('draw') + 1),
+            'draw'            => (int) request()->input('draw', 0),
             'recordsFiltered' => $collection->total(),
             'recordsTotal'    => $collection->total(),
             'recordsPerPage'  => $collection->perPage(),

@@ -27,6 +27,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Route Registration Strategy
+    |--------------------------------------------------------------------------
+    |
+    | register_package_routes:
+    |   true  => service provider auto-registers package routes/api.php
+    |   false => you manage routes manually (e.g., publish routes/psgc.php)
+    |
+    | append_include_on_publish:
+    |   true  => psgc:publish-routes appends require to routes/api.php
+    |   false => only publish routes/psgc.php, no automatic include append
+    |
+    */
+    'register_package_routes' => true,
+    'append_include_on_publish' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Pagination
     |--------------------------------------------------------------------------
     |
@@ -34,6 +51,7 @@ return [
     |
     */
     'paginate' => 10,
+    'max_limit' => 100,
 
     /*
     |--------------------------------------------------------------------------

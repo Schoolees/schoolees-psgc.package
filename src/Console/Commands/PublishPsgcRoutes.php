@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 class PublishPsgcRoutes extends Command
 {
     protected $signature = 'psgc:publish-routes {--force : Overwrite published routes/psgc.php if it exists}';
-    protected $description = 'Publish routes/psgc.php and append require to routes/api.php if missing';
+    protected $description = 'Publish routes/psgc.php and optionally append require to routes/api.php';
 
     public function __construct(protected Filesystem $files) { parent::__construct(); }
 
@@ -21,6 +21,12 @@ class PublishPsgcRoutes extends Command
             '--force' => (bool) $this->option('force'),
         ]);
         $this->output->write(Artisan::output());
+
+        if (! config('psgc.append_include_on_publish', false)) {
+            $this->warn('Skipping routes/api.php include append (psgc.append_include_on_publish=false).');
+            $this->warn('If using published routes, set psgc.register_package_routes=false to avoid duplicate endpoints.');
+            return $code === 0 ? self::SUCCESS : self::FAILURE;
+        }
 
         // 2) Append include to routes/api.php
         $api = base_path('routes/api.php');

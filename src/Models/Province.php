@@ -9,12 +9,16 @@ class Province extends Model
 {
     use HasFactory;
 
-    protected $table = 'provinces';
     protected $primaryKey = 'code';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = ['code','name','region_code'];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.provinces', 'provinces');
+    }
 
     public function getSearchable(): array
     {

@@ -22,7 +22,7 @@ class PsgcServiceProvider extends ServiceProvider
          * - Your package routes/api.php must be UNPREFIXED
          * - We wrap it here with the configurable /psgc prefix
          */
-        if (! $this->app->routesAreCached()) {
+        if (config('psgc.register_package_routes', true) && ! $this->app->routesAreCached()) {
             $this->app['router']->group([
                 'as'         => 'psgc.',
                 'prefix'     => config('psgc.api_prefix', 'psgc'),

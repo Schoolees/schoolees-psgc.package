@@ -3,6 +3,7 @@
 namespace Schoolees\Psgc\Services;
 
 use Schoolees\Psgc\Models\Barangay;
+use Schoolees\Psgc\Support\QueryOptions;
 
 class BarangayService
 {
@@ -10,20 +11,26 @@ class BarangayService
 
     public function getBarangays(array $where, ?string $orderBy = null, ?string $sortBy = null, ?int $limit = null, int $offset = 0)
     {
-        $orderBy = $orderBy ?: config('psgc.order_by', 'name');
-        $sortBy  = $sortBy  ?: config('psgc.sort_by', 'asc');
-        $limit   = $limit   ?: (int) config('psgc.paginate', 10);
+        [$orderBy, $sortBy] = QueryOptions::normalizeSort(
+            $orderBy,
+            $sortBy,
+            ['code', 'name', 'city_code', 'created_at', 'updated_at']
+        );
+        $limit = QueryOptions::normalizeLimit($limit);
+        $offset = QueryOptions::normalizeOffset($offset);
 
         $s = method_exists($this->model, 'getSearchable') ? $this->model->getSearchable() : ['query'=>[],'query_like'=>[]];
         $param     = array_intersect_key($where, array_flip($s['query']));
         $paramLike = array_intersect_key($where, array_flip($s['query_like']));
 
-        $raw = $this->model::where($param)->where(function ($q) use ($paramLike) {
-            foreach ($paramLike as $col => $val) $q->orWhere($col, 'like', "%{$val}%");
+        $raw = $this->model->newQuery()->where($param)->where(function ($q) use ($paramLike) {
+            foreach ($paramLike as $col => $val) {
+                $q->orWhere($col, 'like', "%{$val}%");
+            }
         });
 
         return $raw->orderBy($orderBy, $sortBy)
-            ->paginate($limit, ['*'], 'page', (int)(($offset / $limit) + 1))
+            ->paginate($limit, ['*'], 'page', QueryOptions::pageFromOffset($offset, $limit))
             ->withQueryString();
     }
 }
