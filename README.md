@@ -42,6 +42,7 @@ This repo uses **Conventional Commits** + **Release Please** for automatic versi
 - After release creation, the workflow notifies Packagist to fetch the new tag.
 
 Configure these GitHub repository secrets:
+- `RELEASE_PLEASE_TOKEN`: fine-grained PAT (or bot PAT) with repository **Contents (Read/Write)** and **Pull requests (Read/Write)**
 - `PACKAGIST_USERNAME`: your Packagist username
 - `PACKAGIST_TOKEN`: API token from Packagist account settings
 
@@ -50,6 +51,8 @@ If secrets are missing, release/tag creation still works, but Packagist notifica
 Required GitHub repository settings:
 - `Settings -> Actions -> General -> Workflow permissions`: set to **Read and write permissions**
 - Enable **Allow GitHub Actions to create and approve pull requests**
+
+If the "Allow GitHub Actions to create and approve pull requests" option is disabled by org policy, `RELEASE_PLEASE_TOKEN` is required.
 
 **Run package tests (repository development):**
 ```bash
@@ -197,7 +200,6 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 
 
 
