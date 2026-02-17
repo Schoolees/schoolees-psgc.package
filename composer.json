@@ -28,6 +28,9 @@
     "test": "vendor/bin/phpunit"
   },
   "extra": {
+    "branch-alias": {
+      "dev-main": "1.x-dev"
+    },
     "laravel": {
       "providers": [
         "Schoolees\\Psgc\\Providers\\PsgcServiceProvider"
