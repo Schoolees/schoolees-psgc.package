@@ -1,9 +1,9 @@
 {
   "release-type": "simple",
+  "bootstrap-sha": "85943d7",
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md"
     }
   }
 }
-

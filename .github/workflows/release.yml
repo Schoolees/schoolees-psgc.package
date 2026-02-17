@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   release:
@@ -39,4 +40,3 @@ jobs:
             -d '{"repository":{"url":"https://github.com/Schoolees/schoolees-psgc.package"}}'
 
           echo "Packagist update notification sent."
-

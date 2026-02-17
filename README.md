@@ -47,6 +47,10 @@ Configure these GitHub repository secrets:
 
 If secrets are missing, release/tag creation still works, but Packagist notification is skipped.
 
+Required GitHub repository settings:
+- `Settings -> Actions -> General -> Workflow permissions`: set to **Read and write permissions**
+- Enable **Allow GitHub Actions to create and approve pull requests**
+
 **Run package tests (repository development):**
 ```bash
 composer test
@@ -193,7 +197,6 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 
 
 
