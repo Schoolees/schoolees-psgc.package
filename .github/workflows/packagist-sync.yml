@@ -6,6 +6,10 @@ on:
       - published
   workflow_dispatch:
 
+env:
+  PACKAGIST_PACKAGE: schoolees/laravel-psgc
+  PACKAGIST_REPOSITORY_URL: https://github.com/Schoolees/schoolees-psgc.package
+
 permissions:
   contents: read
 
@@ -34,9 +38,38 @@ jobs:
           PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
           PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
         run: |
-          curl -fsS -X POST \
+          response="$(curl -fsS -X POST \
             "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}" \
             -H "Content-Type: application/json" \
-            -d '{"repository":{"url":"https://github.com/Schoolees/schoolees-psgc.package"}}'
+            -d "{\"repository\":{\"url\":\"${PACKAGIST_REPOSITORY_URL}\"}}")"
 
+          echo "${response}"
           echo "Packagist update notification sent."
+
+      - name: Verify Packagist refreshed the release
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name || '' }}
+        run: |
+          expected_tag="${RELEASE_TAG}"
+
+          if [ -z "${expected_tag}" ]; then
+            echo "No release tag in event payload. Skipping freshness verification for manual run."
+            exit 0
+          fi
+
+          expected_version="${expected_tag#v}"
+
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            body="$(curl -fsS "https://repo.packagist.org/p2/${PACKAGIST_PACKAGE}.json")"
+
+            if printf '%s' "${body}" | grep -q "\"version\":\"${expected_tag}\""; then
+              echo "Packagist now exposes ${expected_tag}."
+              exit 0
+            fi
+
+            echo "Packagist does not expose ${expected_tag} yet (attempt ${attempt}/10). Waiting 30s..."
+            sleep 30
+          done
+
+          echo "Packagist did not expose ${expected_tag} after the sync workflow completed."
+          exit 1

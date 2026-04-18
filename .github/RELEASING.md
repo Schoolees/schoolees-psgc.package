@@ -6,7 +6,7 @@ This repo uses Conventional Commits + Release Please for automatic versioning.
 - GitHub Action `.github/workflows/release.yml` opens/updates a release PR.
 - When that PR is merged, it creates a Git tag + GitHub Release automatically.
 - After release creation, `.github/workflows/release.yml` notifies Packagist immediately.
-- `.github/workflows/packagist-sync.yml` also runs on `release.published` as a second sync path, and can be re-run manually via `workflow_dispatch`.
+- `.github/workflows/packagist-sync.yml` also runs on `release.published`, can be re-run manually via `workflow_dispatch`, and now fails if Packagist still does not expose the released tag after polling.
 
 ## Normal Release Flow
 1. Merge conventional commits into `main`.
@@ -17,6 +17,7 @@ This repo uses Conventional Commits + Release Please for automatic versioning.
 
 ## Manual Recovery
 - If the Git tag or GitHub Release exists but Packagist is stale, run the `Packagist Sync` workflow manually from GitHub Actions.
+- If `Packagist Sync` fails after notification, inspect the workflow log and the current `https://repo.packagist.org/p2/schoolees/laravel-psgc.json` payload to confirm whether the new tag was indexed.
 - If Release Please cannot open or merge the release PR, fix the token or workflow permissions first; do not create ad-hoc version commits unless you intentionally want a manual release.
 
 ## Required GitHub Secrets
