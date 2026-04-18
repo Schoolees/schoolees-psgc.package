@@ -5,6 +5,11 @@ on:
     types:
       - published
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag to verify on Packagist, for example v1.0.2
+        required: true
+        type: string
 
 env:
   PACKAGIST_PACKAGE: schoolees/laravel-psgc
@@ -14,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: packagist-sync-${{ github.event.release.tag_name || github.ref || github.run_id }}
+  group: packagist-sync-${{ github.event.release.tag_name || github.event.inputs.release_tag || github.ref || github.run_id }}
   cancel-in-progress: false
 
 jobs:
@@ -48,16 +53,14 @@ jobs:
 
       - name: Verify Packagist refreshed the release
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name || '' }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.release_tag || '' }}
         run: |
           expected_tag="${RELEASE_TAG}"
 
           if [ -z "${expected_tag}" ]; then
-            echo "No release tag in event payload. Skipping freshness verification for manual run."
-            exit 0
+            echo "No release tag supplied."
+            exit 1
           fi
-
-          expected_version="${expected_tag#v}"
 
           for attempt in 1 2 3 4 5 6 7 8 9 10; do
             body="$(curl -fsS "https://repo.packagist.org/p2/${PACKAGIST_PACKAGE}.json")"

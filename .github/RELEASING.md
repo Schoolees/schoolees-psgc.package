@@ -16,7 +16,7 @@ This repo uses Conventional Commits + Release Please for automatic versioning.
 5. Packagist is notified automatically.
 
 ## Manual Recovery
-- If the Git tag or GitHub Release exists but Packagist is stale, run the `Packagist Sync` workflow manually from GitHub Actions.
+- If the Git tag or GitHub Release exists but Packagist is stale, run the `Packagist Sync` workflow manually from GitHub Actions and provide the release tag (for example `v1.0.2`).
 - If `Packagist Sync` fails after notification, inspect the workflow log and the current `https://repo.packagist.org/p2/schoolees/laravel-psgc.json` payload to confirm whether the new tag was indexed.
 - If Release Please cannot open or merge the release PR, fix the token or workflow permissions first; do not create ad-hoc version commits unless you intentionally want a manual release.
 

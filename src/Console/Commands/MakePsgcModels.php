@@ -90,6 +90,11 @@ class Region extends Model
     {
         return \$this->hasMany(Province::class, 'region_code', 'code');
     }
+
+    public function cities(): HasMany
+    {
+        return \$this->hasMany(City::class, 'region_code', 'code');
+    }
 }
 PHP;
     }
@@ -171,11 +176,15 @@ class City extends Model
 
     protected \$fillable = ['code','name','region_code','province_code','is_city','city_class'];
 
+    protected \$casts = [
+        'is_city' => 'boolean',
+    ];
+
     public function getSearchable(): array
     {
         return [
-            'query' => ['code','region_code','province_code'],
-            'query_like' => ['name'],
+            'query' => ['code','region_code','province_code','is_city'],
+            'query_like' => ['name','city_class'],
         ];
     }
 

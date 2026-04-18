@@ -11,56 +11,63 @@ class PSGCSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::transaction(function () {
-            if ((bool) config('psgc.truncate_before_seed', true)) {
-                $this->truncateConfiguredTables();
-            }
+        if ((bool) config('psgc.truncate_before_seed', true)) {
+            $this->truncateConfiguredTables();
+        }
 
-            $this->seed(config('psgc.tables.regions','regions'),   'psgc/regions.json',   ['code'], ['name','short_name','updated_at']);
-            $this->seed(config('psgc.tables.provinces','provinces'),'psgc/provinces.json',['code'], ['name','region_code','updated_at']);
-            $this->seed(config('psgc.tables.cities','cities'),     'psgc/cities.json',    ['code'], ['name','region_code','province_code','is_city','city_class','updated_at']);
-            $this->seedLarge(config('psgc.tables.barangays','barangays'),'psgc/barangays.json',['code'], ['name','city_code','updated_at']);
+        $this->seed(
+            config('psgc.tables.regions', 'regions'),
+            'psgc/regions.json',
+            ['code'],
+            ['name', 'short_name', 'updated_at']
+        );
+        $this->seed(
+            config('psgc.tables.provinces', 'provinces'),
+            'psgc/provinces.json',
+            ['code'],
+            ['name', 'region_code', 'updated_at']
+        );
+        $this->seed(
+            config('psgc.tables.cities', 'cities'),
+            'psgc/cities.json',
+            ['code'],
+            ['name', 'region_code', 'province_code', 'is_city', 'city_class', 'updated_at']
+        );
+        $this->seed(
+            config('psgc.tables.barangays', 'barangays'),
+            'psgc/barangays.json',
+            ['code'],
+            ['name', 'city_code', 'updated_at']
+        );
+    }
+
+    protected function seed(
+        string $table,
+        string $path,
+        array $keys,
+        array $updates,
+        int $chunkSize = 3000
+    ): void
+    {
+        $rows = $this->readJsonArray($path);
+
+        if ($table === config('psgc.tables.cities', 'cities')) {
+            $this->normalizeCities($rows);
+        }
+
+        DB::transaction(function () use ($table, $rows, $keys, $updates, $chunkSize): void {
+            $now = now();
+
+            while ($chunk = array_splice($rows, 0, $chunkSize)) {
+                foreach ($chunk as &$row) {
+                    $row['created_at'] = $now;
+                    $row['updated_at'] = $now;
+                }
+                unset($row);
+
+                DB::table($table)->upsert($chunk, $keys, $updates);
+            }
         });
-    }
-
-    protected function seed(string $table, string $path, array $keys, array $updates): void
-    {
-        $rows = $this->readJsonArray($path);
-
-        // Normalize city rows (province_code can be null for HUC/ICC)
-        if ($table === config('psgc.tables.cities', 'cities')) {
-            $this->normalizeCities($rows);
-        }
-
-        $now = now();
-        foreach ($rows as &$r) {
-            $r['created_at'] = $now;
-            $r['updated_at'] = $now;
-        }
-        unset($r);
-
-        DB::table($table)->upsert($rows, $keys, $updates);
-    }
-
-    protected function seedLarge(string $table, string $path, array $keys, array $updates): void
-    {
-        $rows = $this->readJsonArray($path);
-
-        // If we ever use seedLarge for cities, still normalize
-        if ($table === config('psgc.tables.cities', 'cities')) {
-            $this->normalizeCities($rows);
-        }
-
-        $now = now();
-        foreach (array_chunk($rows, 3000) as $chunk) {
-            foreach ($chunk as &$r) {
-                $r['created_at'] = $now;
-                $r['updated_at'] = $now;
-            }
-            unset($r);
-
-            DB::table($table)->upsert($chunk, $keys, $updates);
-        }
     }
 
     /**

@@ -40,6 +40,7 @@ composer require schoolees/laravel-psgc
 **Quick installation:**
 ```bash
 php artisan psgc:install --seed
+php artisan psgc:install --force --seed # Overwrite previously published package files
 ```
 **Publishing assets (optional):**
 ```bash
@@ -178,4 +179,3 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
