@@ -2,11 +2,11 @@
 
 namespace Schoolees\Psgc\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Schoolees\Psgc\Http\Resources\BarangayResources;
 use Schoolees\Psgc\Services\BarangayService;
 use Schoolees\Psgc\Support\Utility;
+use Throwable;
 
 class BarangayController
 {
@@ -24,7 +24,7 @@ class BarangayController
             );
 
             return Utility::dataTableResponse(BarangayResources::collection($collection));
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return Utility::jsonException($e);
         }
     }

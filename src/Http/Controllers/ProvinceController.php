@@ -2,11 +2,11 @@
 
 namespace Schoolees\Psgc\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Schoolees\Psgc\Http\Resources\ProvinceResources;
 use Schoolees\Psgc\Services\ProvinceService;
 use Schoolees\Psgc\Support\Utility;
+use Throwable;
 
 class ProvinceController
 {
@@ -24,7 +24,7 @@ class ProvinceController
             );
 
             return Utility::dataTableResponse(ProvinceResources::collection($collection));
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return Utility::jsonException($e);
         }
     }

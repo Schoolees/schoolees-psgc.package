@@ -4,6 +4,7 @@ namespace Schoolees\Psgc\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Region extends Model
 {
@@ -26,5 +27,15 @@ class Region extends Model
             'query'      => ['code'],
             'query_like' => ['name', 'short_name'],
         ];
+    }
+
+    public function provinces(): HasMany
+    {
+        return $this->hasMany(Province::class, 'region_code', 'code');
+    }
+
+    public function cities(): HasMany
+    {
+        return $this->hasMany(City::class, 'region_code', 'code');
     }
 }

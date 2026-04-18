@@ -23,7 +23,8 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 
 ## 📋 Requirements
 - PHP >= 8.1
-- Laravel >= 10.x (tested on Laravel 12)
+- Laravel 10.x to 13.x
+- Laravel 13 requires PHP 8.3+ (per Laravel's support policy)
 - MySQL / MariaDB
 
 ## 🤝 Contributing
@@ -177,5 +178,4 @@ Philippine Statistics Authority — *Philippine Standard Geographic Code (PSGC)*
 
 Update Frequency:
 Quarterly (based on PSA publication schedule)
-
 

@@ -4,6 +4,8 @@ namespace Schoolees\Psgc\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Province extends Model
 {
@@ -26,5 +28,15 @@ class Province extends Model
             'query'      => ['code','region_code'],
             'query_like' => ['name'],
         ];
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class, 'region_code', 'code');
+    }
+
+    public function cities(): HasMany
+    {
+        return $this->hasMany(City::class, 'province_code', 'code');
     }
 }

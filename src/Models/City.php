@@ -4,6 +4,8 @@ namespace Schoolees\Psgc\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -14,6 +16,10 @@ class City extends Model
     protected $keyType = 'string';
 
     protected $fillable = ['code','name','region_code','province_code','is_city','city_class'];
+
+    protected $casts = [
+        'is_city' => 'boolean',
+    ];
 
     public function getTable(): string
     {
@@ -26,5 +32,20 @@ class City extends Model
             'query'      => ['code','region_code','province_code','is_city'],
             'query_like' => ['name','city_class'],
         ];
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class, 'region_code', 'code');
+    }
+
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, 'province_code', 'code');
+    }
+
+    public function barangays(): HasMany
+    {
+        return $this->hasMany(Barangay::class, 'city_code', 'code');
     }
 }

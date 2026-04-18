@@ -2,11 +2,11 @@
 
 namespace Schoolees\Psgc\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Schoolees\Psgc\Http\Resources\RegionResources;
 use Schoolees\Psgc\Services\RegionService;
 use Schoolees\Psgc\Support\Utility;
+use Throwable;
 
 class RegionController
 {
@@ -24,7 +24,7 @@ class RegionController
             );
 
             return Utility::dataTableResponse(RegionResources::collection($collection));
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return Utility::jsonException($e);
         }
     }

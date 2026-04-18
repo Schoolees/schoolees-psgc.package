@@ -2,11 +2,11 @@
 
 namespace Schoolees\Psgc\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Schoolees\Psgc\Http\Resources\CityResources;
 use Schoolees\Psgc\Services\CityService;
 use Schoolees\Psgc\Support\Utility;
+use Throwable;
 
 class CityController
 {
@@ -24,7 +24,7 @@ class CityController
             );
 
             return Utility::dataTableResponse(CityResources::collection($collection));
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return Utility::jsonException($e);
         }
     }
