@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.0.1...v1.0.2) (2026-04-18)
+
+
+### Bug Fixes
+
+* **api:** stop exposing internal exception messages ([10039a9](https://github.com/Schoolees/schoolees-psgc.package/commit/10039a921fde6a49e98d34f526dd385a80c00f60))
+
 ## 1.0.1 (2026-04-19)
 
 
