@@ -34,6 +34,10 @@ class Utility
             $status = ($code >= 400 && $code <= 599) ? $code : 500;
         }
 
-        return response()->json(['code' => $status, 'error' => $e->getMessage()], $status);
+        $message = $status >= 500 && ! config('app.debug', false)
+            ? 'Server Error'
+            : $e->getMessage();
+
+        return response()->json(['code' => $status, 'error' => $message], $status);
     }
 }
