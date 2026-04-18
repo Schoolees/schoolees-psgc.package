@@ -1,0 +1,42 @@
+name: Packagist Sync
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: packagist-sync-${{ github.event.release.tag_name || github.ref || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  notify-packagist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Packagist credentials
+        env:
+          PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        run: |
+          if [ -z "${PACKAGIST_USERNAME}" ] || [ -z "${PACKAGIST_TOKEN}" ]; then
+            echo "PACKAGIST_USERNAME or PACKAGIST_TOKEN is missing."
+            echo "Configure both repository secrets to enable automatic Packagist sync."
+            exit 1
+          fi
+
+      - name: Notify Packagist
+        env:
+          PACKAGIST_USERNAME: ${{ secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        run: |
+          curl -fsS -X POST \
+            "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/Schoolees/schoolees-psgc.package"}}'
+
+          echo "Packagist update notification sent."

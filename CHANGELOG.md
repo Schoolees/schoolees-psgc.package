@@ -1,11 +1,11 @@
 # Changelog
 
-## [1.0.1](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.0.0...v1.0.1) (2026-04-18)
+## 1.0.1 (2026-04-19)
 
 
 ### Bug Fixes
 
-* **compat:** keep the PSGC package installable on Laravel 13 ([71c4e23](https://github.com/Schoolees/schoolees-psgc.package/commit/71c4e2363e3c51012c9fbf2881f597db3e45fdc3))
+* **compat:** keep the PSGC package installable on Laravel 13 ([71c4e23](https://github.com/Schoolees/schoolees-psgc.package/commit/71c4e23))
 
 ## 1.0.0 (2026-02-17)
 
