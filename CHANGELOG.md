@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.0.2...v1.1.0) (2026-04-18)
+
+
+### Features
+
+* **api:** unify route behavior and add a generic pagination mode ([4983bd5](https://github.com/Schoolees/schoolees-psgc.package/commit/4983bd54959f98d03c401968afe5396b0fb72492))
+
+
+### Bug Fixes
+
+* **package:** harden install, generation, seeding, and release recovery ([d89de83](https://github.com/Schoolees/schoolees-psgc.package/commit/d89de837d8765842f6294b4664052f74d3731cc0))
+* **release:** fail when Packagist stays stale after a sync ([ada48e0](https://github.com/Schoolees/schoolees-psgc.package/commit/ada48e09ef7847d7cb7565898f9e6eb56b0aaf75))
+
 ## [1.0.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.0.1...v1.0.2) (2026-04-18)
 
 
