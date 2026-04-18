@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 (2026-04-19)
+
+
+### Bug Fixes
+
+* **compat:** keep the PSGC package installable on Laravel 13 ([71c4e23](https://github.com/Schoolees/schoolees-psgc.package/commit/71c4e23))
+
 ## 1.0.0 (2026-02-17)
 
 
