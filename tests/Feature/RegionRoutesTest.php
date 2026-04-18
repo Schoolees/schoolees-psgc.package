@@ -73,4 +73,27 @@ class RegionRoutesTest extends TestCase
             ->assertJsonPath('data.0.name', 'Ilocos Region')
             ->assertJsonPath('data.1.name', 'National Capital Region');
     }
+
+    public function test_invalid_configured_default_sort_column_falls_back_to_allowed_column(): void
+    {
+        config()->set('psgc.order_by', 'invalid_default');
+
+        Region::query()->create([
+            'code' => '130000000',
+            'name' => 'National Capital Region',
+            'short_name' => 'NCR',
+        ]);
+
+        Region::query()->create([
+            'code' => '010000000',
+            'name' => 'Ilocos Region',
+            'short_name' => 'Region I',
+        ]);
+
+        $response = $this->getJson('/psgc/regions');
+
+        $response->assertOk()
+            ->assertJsonPath('data.0.code', '010000000')
+            ->assertJsonPath('data.1.code', '130000000');
+    }
 }

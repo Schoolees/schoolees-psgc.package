@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This value determines the prefix used for all PSGC API routes.
-    | Example: 'psgc' → /api/psgc/regions
+    | Example: 'psgc' → /psgc/regions
     |
     */
     'api_prefix' => env('PSGC_API_PREFIX', 'psgc'),
@@ -41,6 +41,17 @@ return [
     */
     'register_package_routes' => true,
     'append_include_on_publish' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Response Format
+    |--------------------------------------------------------------------------
+    |
+    | datatable  => legacy DataTables-shaped payload
+    | pagination => generic API pagination payload with data/meta/links
+    |
+    */
+    'response_format' => 'datatable',
 
     /*
     |--------------------------------------------------------------------------

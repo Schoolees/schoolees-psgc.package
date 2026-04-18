@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 class PublishPsgcRoutes extends Command
 {
     protected $signature = 'psgc:publish-routes {--force : Overwrite published routes/psgc.php if it exists}';
-    protected $description = 'Publish routes/psgc.php and optionally append require to routes/api.php';
+    protected $description = 'Publish routes/psgc.php and optionally append a PSGC route group to routes/web.php';
 
     public function __construct(protected Filesystem $files) { parent::__construct(); }
 
@@ -28,25 +28,28 @@ class PublishPsgcRoutes extends Command
             return $code === 0 ? self::SUCCESS : self::FAILURE;
         }
 
-        // 2) Append include to routes/api.php
-        $api = base_path('routes/api.php');
-        $include = "require base_path('routes/psgc.php');";
+        // 2) Append include to routes/web.php so published routes keep the same /psgc/* URL shape.
+        $web = base_path('routes/web.php');
+        $include = <<<'PHP'
+\Illuminate\Support\Facades\Route::middleware(config('psgc.middleware', ['api']))
+    ->prefix(config('psgc.api_prefix', 'psgc'))
+    ->group(base_path('routes/psgc.php'));
+PHP;
 
-        if (! $this->files->exists($api)) {
-            // Create a minimal api.php if none exists
-            $this->files->put($api, "<?php\n\n{$include}\n");
-            $this->info('✅ Created routes/api.php and added PSGC include.');
+        if (! $this->files->exists($web)) {
+            $this->files->put($web, "<?php\n\n{$include}\n");
+            $this->info('✅ Created routes/web.php and added PSGC route group.');
             return self::SUCCESS;
         }
 
-        $content = $this->files->get($api);
+        $content = $this->files->get($web);
         if (str_contains($content, $include)) {
-            $this->info('✅ PSGC include already present in routes/api.php');
+            $this->info('✅ PSGC route group already present in routes/web.php');
             return self::SUCCESS;
         }
 
-        $this->files->append($api, PHP_EOL . $include . PHP_EOL);
-        $this->info('✅ Appended PSGC include to routes/api.php');
+        $this->files->append($web, PHP_EOL . $include . PHP_EOL);
+        $this->info('✅ Appended PSGC route group to routes/web.php');
         return $code === 0 ? self::SUCCESS : self::FAILURE;
     }
 }

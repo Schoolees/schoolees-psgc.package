@@ -42,6 +42,9 @@ composer require schoolees/laravel-psgc
 php artisan psgc:install --seed
 php artisan psgc:install --force --seed # Overwrite previously published package files
 ```
+
+By default, the package auto-registers routes at `/{PSGC_API_PREFIX}` and keeps the same URL shape if you later switch to published routes.
+
 **Publishing assets (optional):**
 ```bash
 # Config
@@ -56,6 +59,7 @@ php artisan psgc:publish-routes --force # Overwrite if re-running
 
 # Resources
 php artisan vendor:publish --tag=psgc-resources
+php artisan vendor:publish --tag=psgc-resources-classes
 ```
 **Generate PSGC models (optional):**
 ```bash
@@ -122,8 +126,8 @@ Each model has a `getSearchable()` method to define searchable columns for filte
 public function getSearchable(): array
 {
     return [
-        'query' => ['code', 'region_code', 'province_code'],
-        'query_like' => ['name'],
+        'query' => ['code', 'region_code', 'province_code', 'is_city'],
+        'query_like' => ['name', 'city_class'],
     ];
 }
 ```
@@ -135,7 +139,7 @@ The package follows the Service-Controller-Resource pattern for clean, maintaina
 ```php
 $results = $this->cityService->getCities(
     request()->all(),
-    request()->input('order_by', 'id'),
+    request()->input('order_by', 'name'),
     request()->input('sort_by', 'desc'),
     request()->input('limit', 10),
     request()->input('offset', 0)
@@ -150,6 +154,7 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 
 **Route strategy (important):**
 - Default: package auto-registers routes via service provider.
+- Published routes are appended to `routes/web.php` with the configured PSGC prefix and middleware so they keep the same `/{prefix}/*` URLs.
 - If you want to use published `routes/psgc.php`, disable package route registration to avoid duplicates:
 ```php
 // config/psgc.php
@@ -160,6 +165,12 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 ```php
 // config/psgc.php
 'max_limit' => 100, // caps ?limit=...
+```
+
+**Response format override:**
+```php
+// config/psgc.php
+'response_format' => 'datatable', // or 'pagination'
 ```
 
 ## 📜 License

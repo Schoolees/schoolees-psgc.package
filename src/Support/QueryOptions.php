@@ -13,6 +13,10 @@ final class QueryOptions
         $defaultOrderBy = (string) config('psgc.order_by', 'name');
         $defaultSortBy  = (string) config('psgc.sort_by', 'asc');
 
+        if ($allowedOrderBy !== [] && ! in_array($defaultOrderBy, $allowedOrderBy, true)) {
+            $defaultOrderBy = $allowedOrderBy[0];
+        }
+
         $sortBy = strtolower(trim((string) ($sortBy ?? '')));
         if (! in_array($sortBy, ['asc', 'desc'], true)) {
             $sortBy = strtolower($defaultSortBy) === 'desc' ? 'desc' : 'asc';
@@ -62,4 +66,3 @@ final class QueryOptions
         return intdiv(max(0, $offset), $limit) + 1;
     }
 }
-

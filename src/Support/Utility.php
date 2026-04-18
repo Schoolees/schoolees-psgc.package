@@ -9,6 +9,10 @@ class Utility
 {
     public static function dataTableResponse($collection): array
     {
+        if ((string) config('psgc.response_format', 'datatable') === 'pagination') {
+            return self::paginationResponse($collection);
+        }
+
         if (class_exists(\App\Libraries\UtilityLibrary::class)
             && method_exists(\App\Libraries\UtilityLibrary::class, 'dataTableResponse')) {
             return \App\Libraries\UtilityLibrary::dataTableResponse($collection);
@@ -22,6 +26,18 @@ class Utility
             'recordsPerPage'  => $collection->perPage(),
             'data'            => $collection,
             'filters'         => request()->all(),
+        ];
+    }
+
+    public static function paginationResponse($collection): array
+    {
+        $payload = $collection->response()->getData(true);
+
+        return [
+            'data' => $payload['data'] ?? [],
+            'meta' => $payload['meta'] ?? [],
+            'links' => $payload['links'] ?? [],
+            'filters' => request()->all(),
         ];
     }
 

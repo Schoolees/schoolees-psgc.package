@@ -28,7 +28,7 @@ class PsgcServiceProvider extends ServiceProvider
                 'prefix'     => config('psgc.api_prefix', 'psgc'),
                 'middleware' => config('psgc.middleware', ['api']),
             ], function () {
-                require __DIR__ . '/../../routes/api.php';
+                require __DIR__ . '/../../routes/psgc.php';
             });
         }
 
@@ -48,7 +48,7 @@ class PsgcServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../../routes/psgc.php'                 => base_path('routes/psgc.php')], 'psgc-routes');
 
         // Publish HTTP Resources (package -> app), if you want to customize them in the host app
-        $this->publishes([__DIR__ . '/../Http/Resources' => app_path('Http/Resources')], 'psgc-resources-classes');
+        $this->publishes([__DIR__ . '/../Http/Resources' => app_path('Http/Resources/Psgc')], 'psgc-resources-classes');
 
         // Convenience umbrella tag
         $this->publishes([
