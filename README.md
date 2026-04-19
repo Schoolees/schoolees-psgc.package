@@ -73,33 +73,33 @@ php artisan make:psgc-models --softdeletes # Include SoftDeletes trait
 # Get all Regions
 GET /psgc/regions
 
-# Get Provinces in Region 13
-GET /psgc/provinces?region_code=130000000
+# Get Cities in the National Capital Region (NCR)
+GET /psgc/cities?region_code=1300000000
 
-# Get Cities in Province 133900000
-GET /psgc/cities?province_code=133900000
+# Get the City of Manila
+GET /psgc/cities?code=1380600000
 
-# Get Barangays in City 133900000
-GET /psgc/barangays?city_code=133900000
+# Get Barangays in the City of Manila
+GET /psgc/barangays?city_code=1380600000
 ```
 **Example JSON Response:**
 ```json
 {
   "code": 200,
   "draw": 1,
-  "recordsFiltered": 17,
-  "recordsTotal": 17,
+  "recordsFiltered": 1,
+  "recordsTotal": 1,
   "recordsPerPage": 10,
   "data": [
     {
-      "code": "133900000",
+      "code": "1380600000",
       "name": "City of Manila",
-      "province_code": "133900000",
-      "region_code": "130000000"
+      "province_code": null,
+      "region_code": "1300000000"
     }
   ],
   "filters": {
-    "province_code": "133900000"
+    "code": "1380600000"
   }
 }
 ```
@@ -108,9 +108,9 @@ GET /psgc/barangays?city_code=133900000
 
 You can filter results by passing query parameters. Refer to the `getSearchable()` method on each model for available filterable fields.
 
-**Example: Get Provinces in Region 13**
+**Example: Get cities in the National Capital Region (NCR)**
 ```php
-GET /psgc/provinces?region_code=130000000
+GET /psgc/cities?region_code=1300000000
 ```
 
 **Example: Search for a city by name**
