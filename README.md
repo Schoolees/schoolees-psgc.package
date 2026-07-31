@@ -118,6 +118,8 @@ GET /psgc/cities?region_code=1300000000
 GET /psgc/cities?name=Manila
 ```
 
+`query_like` filters use SQL `LIKE` under the hood, but `%` and `_` in your search value are escaped and matched literally — they are not treated as wildcards.
+
 ## 🔍 Searchable Fields
 Each model has a `getSearchable()` method to define searchable columns for filtering via API.
 
@@ -178,6 +180,9 @@ This package is open-sourced software licensed under the MIT license.
 
 ## 🏢 About
 Developed & maintained by Schoolees as part of the Schoolees Educational Suite.
+
+## 🔢 Code Format
+Every `code` (and every `region_code`/`province_code`/`city_code` reference) is a zero-padded, fixed-width **10-character string**, per the current PSA PSGC format, e.g. National Capital Region is `1300000000` and Region I (Ilocos Region) is `0100000000`. Codes are strings, not integers — always compare/store them as strings so leading zeros aren't lost.
 
 ## 📊 Data Source
 This package uses the official **Philippine Standard Geographic Code (PSGC)** dataset published by the **Philippine Statistics Authority (PSA)**.
