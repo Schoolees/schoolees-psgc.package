@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.1](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.0...v1.1.1) (2026-07-31)
+
+
+### Bug Fixes
+
+* **data:** zero-pad PSGC codes for Regions I-IX ([ee29b3e](https://github.com/Schoolees/schoolees-psgc.package/commit/ee29b3e460f9d45cdc6b8049b94fcb7e5899a391))
+* **models:** stop generating invalid PHP in make:psgc-models ([823f83e](https://github.com/Schoolees/schoolees-psgc.package/commit/823f83e0de173f73b4c922afa770dd05a9d32833))
+* PSGC audit findings (invalid generated PHP, code padding, dead routes, LIKE escaping) ([6da334f](https://github.com/Schoolees/schoolees-psgc.package/commit/6da334fb3571557347506e1c5f1e0b8818c87de2))
+* **routes:** remove unused routes/api.php and correct stale references ([8b18f95](https://github.com/Schoolees/schoolees-psgc.package/commit/8b18f954ba2eccf11b576f726d7fa94cbdafecd1))
+* **search:** escape LIKE wildcards in PSGC filters ([0c9bb6e](https://github.com/Schoolees/schoolees-psgc.package/commit/0c9bb6e3a884a906c3d55d6d55b99670804e75dd))
+
 ## [1.1.0](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.0.2...v1.1.0) (2026-04-18)
 
 
