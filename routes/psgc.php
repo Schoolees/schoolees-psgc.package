@@ -6,7 +6,7 @@ use Schoolees\Psgc\Http\Controllers\CityController;
 use Schoolees\Psgc\Http\Controllers\ProvinceController;
 use Schoolees\Psgc\Http\Controllers\RegionController;
 
-Route::get('regions', [RegionController::class, 'show']);
-Route::get('provinces', [ProvinceController::class, 'show']);
-Route::get('cities', [CityController::class, 'show']);
-Route::get('barangays', [BarangayController::class, 'show']);
+Route::get('regions', [RegionController::class, 'index']);
+Route::get('provinces', [ProvinceController::class, 'index']);
+Route::get('cities', [CityController::class, 'index']);
+Route::get('barangays', [BarangayController::class, 'index']);

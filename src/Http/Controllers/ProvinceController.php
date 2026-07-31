@@ -12,7 +12,7 @@ class ProvinceController
 {
     public function __construct(protected ProvinceService $service) {}
 
-    public function show(): array|JsonResponse
+    public function index(): array|JsonResponse
     {
         try {
             $collection = $this->service->getProvinces(
