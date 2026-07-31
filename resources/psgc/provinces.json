@@ -30,109 +30,109 @@
     "region_code": "1400000000"
   },
   {
-    "code": "102800000",
+    "code": "0102800000",
     "name": "Ilocos Norte",
-    "region_code": "100000000"
+    "region_code": "0100000000"
   },
   {
-    "code": "102900000",
+    "code": "0102900000",
     "name": "Ilocos Sur",
-    "region_code": "100000000"
+    "region_code": "0100000000"
   },
   {
-    "code": "103300000",
+    "code": "0103300000",
     "name": "La Union",
-    "region_code": "100000000"
+    "region_code": "0100000000"
   },
   {
-    "code": "105500000",
+    "code": "0105500000",
     "name": "Pangasinan",
-    "region_code": "100000000"
+    "region_code": "0100000000"
   },
   {
-    "code": "200900000",
+    "code": "0200900000",
     "name": "Batanes",
-    "region_code": "200000000"
+    "region_code": "0200000000"
   },
   {
-    "code": "201500000",
+    "code": "0201500000",
     "name": "Cagayan",
-    "region_code": "200000000"
+    "region_code": "0200000000"
   },
   {
-    "code": "203100000",
+    "code": "0203100000",
     "name": "Isabela",
-    "region_code": "200000000"
+    "region_code": "0200000000"
   },
   {
-    "code": "205000000",
+    "code": "0205000000",
     "name": "Nueva Vizcaya",
-    "region_code": "200000000"
+    "region_code": "0200000000"
   },
   {
-    "code": "205700000",
+    "code": "0205700000",
     "name": "Quirino",
-    "region_code": "200000000"
+    "region_code": "0200000000"
   },
   {
-    "code": "300800000",
+    "code": "0300800000",
     "name": "Bataan",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "301400000",
+    "code": "0301400000",
     "name": "Bulacan",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "304900000",
+    "code": "0304900000",
     "name": "Nueva Ecija",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "305400000",
+    "code": "0305400000",
     "name": "Pampanga",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "306900000",
+    "code": "0306900000",
     "name": "Tarlac",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "307100000",
+    "code": "0307100000",
     "name": "Zambales",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "307700000",
+    "code": "0307700000",
     "name": "Aurora",
-    "region_code": "300000000"
+    "region_code": "0300000000"
   },
   {
-    "code": "401000000",
+    "code": "0401000000",
     "name": "Batangas",
-    "region_code": "400000000"
+    "region_code": "0400000000"
   },
   {
-    "code": "402100000",
+    "code": "0402100000",
     "name": "Cavite",
-    "region_code": "400000000"
+    "region_code": "0400000000"
   },
   {
-    "code": "403400000",
+    "code": "0403400000",
     "name": "Laguna",
-    "region_code": "400000000"
+    "region_code": "0400000000"
   },
   {
-    "code": "405600000",
+    "code": "0405600000",
     "name": "Quezon",
-    "region_code": "400000000"
+    "region_code": "0400000000"
   },
   {
-    "code": "405800000",
+    "code": "0405800000",
     "name": "Rizal",
-    "region_code": "400000000"
+    "region_code": "0400000000"
   },
   {
     "code": "1704000000",
@@ -160,59 +160,59 @@
     "region_code": "1700000000"
   },
   {
-    "code": "500500000",
+    "code": "0500500000",
     "name": "Albay",
-    "region_code": "500000000"
+    "region_code": "0500000000"
   },
   {
-    "code": "501600000",
+    "code": "0501600000",
     "name": "Camarines Norte",
-    "region_code": "500000000"
+    "region_code": "0500000000"
   },
   {
-    "code": "501700000",
+    "code": "0501700000",
     "name": "Camarines Sur",
-    "region_code": "500000000"
+    "region_code": "0500000000"
   },
   {
-    "code": "502000000",
+    "code": "0502000000",
     "name": "Catanduanes",
-    "region_code": "500000000"
+    "region_code": "0500000000"
   },
   {
-    "code": "504100000",
+    "code": "0504100000",
     "name": "Masbate",
-    "region_code": "500000000"
+    "region_code": "0500000000"
   },
   {
-    "code": "506200000",
+    "code": "0506200000",
     "name": "Sorsogon",
-    "region_code": "500000000"
+    "region_code": "0500000000"
   },
   {
-    "code": "600400000",
+    "code": "0600400000",
     "name": "Aklan",
-    "region_code": "600000000"
+    "region_code": "0600000000"
   },
   {
-    "code": "600600000",
+    "code": "0600600000",
     "name": "Antique",
-    "region_code": "600000000"
+    "region_code": "0600000000"
   },
   {
-    "code": "601900000",
+    "code": "0601900000",
     "name": "Capiz",
-    "region_code": "600000000"
+    "region_code": "0600000000"
   },
   {
-    "code": "603000000",
+    "code": "0603000000",
     "name": "Iloilo",
-    "region_code": "600000000"
+    "region_code": "0600000000"
   },
   {
-    "code": "607900000",
+    "code": "0607900000",
     "name": "Guimaras",
-    "region_code": "600000000"
+    "region_code": "0600000000"
   },
   {
     "code": "1804500000",
@@ -230,59 +230,59 @@
     "region_code": "1800000000"
   },
   {
-    "code": "701200000",
+    "code": "0701200000",
     "name": "Bohol",
-    "region_code": "700000000"
+    "region_code": "0700000000"
   },
   {
-    "code": "702200000",
+    "code": "0702200000",
     "name": "Cebu",
-    "region_code": "700000000"
+    "region_code": "0700000000"
   },
   {
-    "code": "802600000",
+    "code": "0802600000",
     "name": "Eastern Samar",
-    "region_code": "800000000"
+    "region_code": "0800000000"
   },
   {
-    "code": "803700000",
+    "code": "0803700000",
     "name": "Leyte",
-    "region_code": "800000000"
+    "region_code": "0800000000"
   },
   {
-    "code": "804800000",
+    "code": "0804800000",
     "name": "Northern Samar",
-    "region_code": "800000000"
+    "region_code": "0800000000"
   },
   {
-    "code": "806000000",
+    "code": "0806000000",
     "name": "Samar",
-    "region_code": "800000000"
+    "region_code": "0800000000"
   },
   {
-    "code": "806400000",
+    "code": "0806400000",
     "name": "Southern Leyte",
-    "region_code": "800000000"
+    "region_code": "0800000000"
   },
   {
-    "code": "807800000",
+    "code": "0807800000",
     "name": "Biliran",
-    "region_code": "800000000"
+    "region_code": "0800000000"
   },
   {
-    "code": "907200000",
+    "code": "0907200000",
     "name": "Zamboanga del Norte",
-    "region_code": "900000000"
+    "region_code": "0900000000"
   },
   {
-    "code": "907300000",
+    "code": "0907300000",
     "name": "Zamboanga del Sur",
-    "region_code": "900000000"
+    "region_code": "0900000000"
   },
   {
-    "code": "908300000",
+    "code": "0908300000",
     "name": "Zamboanga Sibugay",
-    "region_code": "900000000"
+    "region_code": "0900000000"
   },
   {
     "code": "1001300000",

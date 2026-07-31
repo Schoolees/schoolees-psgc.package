@@ -35,7 +35,10 @@ abstract class SearchablePsgcService
         if ($likeFilters !== []) {
             $query->where(function (Builder $builder) use ($likeFilters): void {
                 foreach ($likeFilters as $column => $value) {
-                    $builder->orWhere($column, 'like', "%{$value}%");
+                    $pattern = '%' . QueryOptions::escapeLike((string) $value) . '%';
+
+                    // $column always comes from the model's own getSearchable() whitelist, never user input.
+                    $builder->orWhereRaw("{$column} LIKE ? ESCAPE ?", [$pattern, '\\']);
                 }
             });
         }

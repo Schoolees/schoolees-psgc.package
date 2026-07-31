@@ -12,7 +12,7 @@ class RegionController
 {
     public function __construct(protected RegionService $service) {}
 
-    public function show(): array|JsonResponse
+    public function index(): array|JsonResponse
     {
         try {
             $collection = $this->service->getRegions(

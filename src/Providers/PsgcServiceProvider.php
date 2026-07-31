@@ -19,7 +19,7 @@ class PsgcServiceProvider extends ServiceProvider
     {
         /**
          * Routes
-         * - Your package routes/api.php must be UNPREFIXED
+         * - routes/psgc.php must be UNPREFIXED
          * - We wrap it here with the configurable /psgc prefix
          */
         if (config('psgc.register_package_routes', true) && ! $this->app->routesAreCached()) {
@@ -65,7 +65,7 @@ class PsgcServiceProvider extends ServiceProvider
             $commands = [
                 InstallPsgcCommand::class,
                 MakePsgcModels::class,
-                PublishPsgcRoutes::class, // one-step: publish routes file + append include to routes/api.php
+                PublishPsgcRoutes::class, // one-step: publish routes file + append include to routes/web.php
             ];
 
             // Optionally register if present in your package

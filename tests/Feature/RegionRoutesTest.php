@@ -96,4 +96,27 @@ class RegionRoutesTest extends TestCase
             ->assertJsonPath('data.0.code', '010000000')
             ->assertJsonPath('data.1.code', '130000000');
     }
+
+    public function test_like_filters_treat_underscore_as_a_literal_character(): void
+    {
+        // Same length, differ only at the position where "_" sits in the search term.
+        Region::query()->create([
+            'code' => '010000000',
+            'name' => 'Region_One',
+            'short_name' => 'Region I',
+        ]);
+
+        Region::query()->create([
+            'code' => '130000000',
+            'name' => 'RegionXOne',
+            'short_name' => 'NCR',
+        ]);
+
+        // An unescaped "_" is a single-character SQL LIKE wildcard, so it would also match "RegionXOne".
+        $response = $this->getJson('/psgc/regions?name=Region_One');
+
+        $response->assertOk()
+            ->assertJsonPath('recordsTotal', 1)
+            ->assertJsonPath('data.0.code', '010000000');
+    }
 }
