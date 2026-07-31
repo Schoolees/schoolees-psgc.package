@@ -10,22 +10,22 @@
     "short_name": "Cordillera Administrative Region (CAR)"
   },
   {
-    "code": "100000000",
+    "code": "0100000000",
     "name": "Region I (Ilocos Region)",
     "short_name": "Region I (Ilocos Region)"
   },
   {
-    "code": "200000000",
+    "code": "0200000000",
     "name": "Region II (Cagayan Valley)",
     "short_name": "Region II (Cagayan Valley)"
   },
   {
-    "code": "300000000",
+    "code": "0300000000",
     "name": "Region III (Central Luzon)",
     "short_name": "Region III (Central Luzon)"
   },
   {
-    "code": "400000000",
+    "code": "0400000000",
     "name": "Region IV-A (CALABARZON)",
     "short_name": "Region IV-A (CALABARZON)"
   },
@@ -35,12 +35,12 @@
     "short_name": "MIMAROPA Region"
   },
   {
-    "code": "500000000",
+    "code": "0500000000",
     "name": "Region V (Bicol Region)",
     "short_name": "Region V (Bicol Region)"
   },
   {
-    "code": "600000000",
+    "code": "0600000000",
     "name": "Region VI (Western Visayas)",
     "short_name": "Region VI (Western Visayas)"
   },
@@ -50,17 +50,17 @@
     "short_name": "Negros Island Region (NIR)"
   },
   {
-    "code": "700000000",
+    "code": "0700000000",
     "name": "Region VII (Central Visayas)",
     "short_name": "Region VII (Central Visayas)"
   },
   {
-    "code": "800000000",
+    "code": "0800000000",
     "name": "Region VIII (Eastern Visayas)",
     "short_name": "Region VIII (Eastern Visayas)"
   },
   {
-    "code": "900000000",
+    "code": "0900000000",
     "name": "Region IX (Zamboanga Peninsula)",
     "short_name": "Region IX (Zamboanga Peninsula)"
   },
