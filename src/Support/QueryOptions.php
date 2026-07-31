@@ -65,4 +65,12 @@ final class QueryOptions
 
         return intdiv(max(0, $offset), $limit) + 1;
     }
+
+    /**
+     * Escape LIKE metacharacters (\, %, _) so filter values are matched literally.
+     */
+    public static function escapeLike(string $value): string
+    {
+        return str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
+    }
 }
