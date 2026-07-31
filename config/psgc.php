@@ -31,11 +31,11 @@ return [
     |--------------------------------------------------------------------------
     |
     | register_package_routes:
-    |   true  => service provider auto-registers package routes/api.php
+    |   true  => service provider auto-registers package routes/psgc.php
     |   false => you manage routes manually (e.g., publish routes/psgc.php)
     |
     | append_include_on_publish:
-    |   true  => psgc:publish-routes appends require to routes/api.php
+    |   true  => psgc:publish-routes appends a route group to routes/web.php
     |   false => only publish routes/psgc.php, no automatic include append
     |
     */

@@ -23,7 +23,7 @@ class PublishPsgcRoutes extends Command
         $this->output->write(Artisan::output());
 
         if (! config('psgc.append_include_on_publish', false)) {
-            $this->warn('Skipping routes/api.php include append (psgc.append_include_on_publish=false).');
+            $this->warn('Skipping routes/web.php include append (psgc.append_include_on_publish=false).');
             $this->warn('If using published routes, set psgc.register_package_routes=false to avoid duplicate endpoints.');
             return $code === 0 ? self::SUCCESS : self::FAILURE;
         }

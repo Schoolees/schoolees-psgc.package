@@ -5,7 +5,7 @@
 - `src/Providers/PsgcServiceProvider.php`: Laravel service provider (publishes assets, loads migrations, registers commands, wraps API routes with configurable prefix).
 - `src/Http/Controllers`, `src/Http/Resources`: API layer (controllers + JSON resources).
 - `src/Models`, `src/Services`: Eloquent models and service layer used by controllers.
-- `routes/api.php`: Package API routes (intentionally unprefixed; the provider applies the `psgc` prefix).
+- `routes/psgc.php`: Package API routes (intentionally unprefixed; the provider applies the `psgc` prefix).
 - `config/psgc.php`: Package configuration (prefix, middleware, ordering, pagination).
 - `database/migrations`, `database/seeders`: Schema + seeders for PSGC data.
 - `resources/psgc/`: PSGC dataset (JSON).
