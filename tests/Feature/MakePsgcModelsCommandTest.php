@@ -43,4 +43,17 @@ class MakePsgcModelsCommandTest extends TestCase
         $this->assertStringContainsString("'query' => ['code','region_code','province_code','is_city']", $city);
         $this->assertStringContainsString("'query_like' => ['name','city_class']", $city);
     }
+
+    public function test_generated_models_are_syntactically_valid_php(): void
+    {
+        $this->artisan('make:psgc-models', ['--force' => true])->assertExitCode(0);
+
+        foreach (['Region', 'Province', 'City', 'Barangay'] as $name) {
+            $path = app_path("Models/{$name}.php");
+
+            exec('php -l ' . escapeshellarg($path) . ' 2>&1', $output, $exitCode);
+
+            $this->assertSame(0, $exitCode, "{$name}.php failed php -l:\n" . implode("\n", $output));
+        }
+    }
 }

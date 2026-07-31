@@ -70,13 +70,16 @@ class Region extends Model
 {
     $traitUse
 
-    protected \$table = config('psgc.tables.regions', 'regions');
-
     protected \$primaryKey = 'code';
     public \$incrementing = false;
     protected \$keyType = 'string';
 
     protected \$fillable = ['code','name','short_name'];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.regions', 'regions');
+    }
 
     public function getSearchable(): array
     {
@@ -119,13 +122,16 @@ class Province extends Model
 {
     $traitUse
 
-    protected \$table = config('psgc.tables.provinces', 'provinces');
-
     protected \$primaryKey = 'code';
     public \$incrementing = false;
     protected \$keyType = 'string';
 
     protected \$fillable = ['code','name','region_code'];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.provinces', 'provinces');
+    }
 
     public function getSearchable(): array
     {
@@ -168,8 +174,6 @@ class City extends Model
 {
     $traitUse
 
-    protected \$table = config('psgc.tables.cities', 'cities');
-
     protected \$primaryKey = 'code';
     public \$incrementing = false;
     protected \$keyType = 'string';
@@ -179,6 +183,11 @@ class City extends Model
     protected \$casts = [
         'is_city' => 'boolean',
     ];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.cities', 'cities');
+    }
 
     public function getSearchable(): array
     {
@@ -226,13 +235,16 @@ class Barangay extends Model
 {
     $traitUse
 
-    protected \$table = config('psgc.tables.barangays', 'barangays');
-
     protected \$primaryKey = 'code';
     public \$incrementing = false;
     protected \$keyType = 'string';
 
     protected \$fillable = ['code','name','city_code'];
+
+    public function getTable(): string
+    {
+        return (string) config('psgc.tables.barangays', 'barangays');
+    }
 
     public function getSearchable(): array
     {
