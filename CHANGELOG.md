@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.2...v2.0.3) (2026-08-24)
+
+
+### Performance Improvements
+
+* **db:** index regions.short_name ([e5bdeda](https://github.com/Schoolees/schoolees-psgc.package/commit/e5bdeda6ae7db0706d7b5890b401480977fe6437))
+
 ## [2.0.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.1...v2.0.2) (2026-08-24)
 
 
