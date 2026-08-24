@@ -55,6 +55,46 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Response Formatter
+    |--------------------------------------------------------------------------
+    |
+    | Optional hook to shape the response envelope yourself. It receives the
+    | resource collection and must return an array. Accepts a callable,
+    | 'Class@method', [Class::class, 'method'], or a class name that is either
+    | invokable or exposes dataTableResponse(). When set, it replaces both
+    | built-in envelopes.
+    |
+    */
+    'response_formatter' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Filters Echo
+    |--------------------------------------------------------------------------
+    |
+    | Controls the `filters` key in the response.
+    |
+    | request => echo the whole query string back (default; unvalidated)
+    | applied => echo only the filters that actually reached the query
+    | none    => omit the echo entirely
+    |
+    */
+    'filters_echo' => 'request',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exception Logging
+    |--------------------------------------------------------------------------
+    |
+    | Controllers convert every Throwable into a JSON envelope. With this on,
+    | 5xx responses are also written to the log, so an internal failure is not
+    | silently swallowed.
+    |
+    */
+    'log_exceptions' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Pagination
     |--------------------------------------------------------------------------
     |

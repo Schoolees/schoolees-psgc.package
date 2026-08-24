@@ -17,6 +17,9 @@ class OffsetPaginator extends LengthAwarePaginator
 {
     protected int $rowOffset;
 
+    /** @var array<string, scalar> */
+    protected array $appliedFilters = [];
+
     /**
      * @param  \Illuminate\Support\Collection<int, mixed>|array<int, mixed>  $items
      */
@@ -36,6 +39,27 @@ class OffsetPaginator extends LengthAwarePaginator
     public function rowOffset(): int
     {
         return $this->rowOffset;
+    }
+
+    /**
+     * Record the filters that actually reached the query, so the response can
+     * echo those rather than the raw query string.
+     *
+     * @param  array<string, scalar>  $filters
+     */
+    public function withAppliedFilters(array $filters): static
+    {
+        $this->appliedFilters = $filters;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, scalar>
+     */
+    public function appliedFilters(): array
+    {
+        return $this->appliedFilters;
     }
 
     public function firstItem()
