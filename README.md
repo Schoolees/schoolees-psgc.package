@@ -23,10 +23,17 @@ It comes complete with **migrations**, **seeders**, **JSON data**, **Eloquent mo
 
 
 ## 📋 Requirements
-- PHP >= 8.1
-- Laravel 10.x to 13.x
+- PHP >= 8.2
+- Laravel 12.x or 13.x
 - Laravel 13 requires PHP 8.3+ (per Laravel's support policy)
-- MySQL / MariaDB
+- MySQL / MariaDB, PostgreSQL, or SQLite
+
+> **On Laravel 10 or 11?** Stay on `^1.1`. Those branches no longer receive
+> security patches and Composer will not resolve them, so 2.0 drops support
+> rather than claim something untestable. See [UPGRADE.md](UPGRADE.md).
+
+## ⬆️ Upgrading
+Coming from 1.x? See [UPGRADE.md](UPGRADE.md) for the 2.0 breaking changes.
 
 ## 🤝 Contributing
 Repository development/testing notes are in `CONTRIBUTING.md`.
@@ -83,6 +90,16 @@ GET /psgc/cities?code=1380600000
 # Get Barangays in the City of Manila
 GET /psgc/barangays?city_code=1380600000
 ```
+
+**Single record by code:**
+```php
+GET /psgc/regions/1300000000
+GET /psgc/provinces/1380000000
+GET /psgc/cities/1380600000
+GET /psgc/barangays/1380601000
+```
+
+An unknown code answers `404` in the same error envelope as everything else.
 **Example JSON Response:**
 ```json
 {
@@ -176,7 +193,7 @@ GET /psgc/cities?region_code=1300000000
 GET /psgc/cities?name=Manila
 ```
 
-`query_like` filters use SQL `LIKE` under the hood, but `%` and `_` in your search value are escaped and matched literally — they are not treated as wildcards.
+`query_like` filters use SQL `LIKE` under the hood — `ILIKE` on PostgreSQL, where `LIKE` is case-sensitive — but `%` and `_` in your search value are escaped and matched literally, so they are not treated as wildcards.
 
 Filter semantics:
 
@@ -231,6 +248,21 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 'register_package_routes' => false,
 ```
 
+**Caching (optional)**
+
+PSGC data only changes when the dataset is re-seeded, so lookups can be cached hard:
+
+```env
+PSGC_CACHE=true
+PSGC_CACHE_STORE=redis   # optional; defaults to your app's default store
+```
+
+Invalidation uses a version counter rather than cache tags, so it works on every driver including `file` and `database`. The seeder flushes the cache automatically after loading data; to do it by hand:
+
+```bash
+php artisan psgc:cache-clear
+```
+
 **Configuration reference (`config/psgc.php`):**
 
 | Key | Default | What it does |
@@ -250,6 +282,9 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 | `tables` | region/province/city/barangay names | Table names, if yours differ. |
 | `resources_path` | `base_path('resources/psgc')` | Where the JSON dataset is read from when seeding. |
 | `truncate_before_seed` | `true` | Whether a seed empties the tables first. |
+| `cache.enabled` | `false` | Cache lookups (`PSGC_CACHE`). |
+| `cache.store` | `null` | Cache store to use (`PSGC_CACHE_STORE`); null = app default. |
+| `cache.ttl` | `86400` | Seconds to keep a cached entry. |
 
 ## 📜 License
 This package is open-sourced software licensed under the MIT license.
