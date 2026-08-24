@@ -22,10 +22,6 @@ class Utility
             return self::paginationResponse($collection);
         }
 
-        if (self::legacyHostFormatter() !== null) {
-            return \App\Libraries\UtilityLibrary::dataTableResponse($collection);
-        }
-
         return [
             'code'            => 200,
             'draw'            => (int) request()->input('draw', 0),
@@ -35,6 +31,24 @@ class Utility
             'data'            => $collection,
             'filters'         => self::filters($collection),
         ];
+    }
+
+    /**
+     * Envelope for a single record, as returned by the show endpoints.
+     */
+    public static function itemResponse($resource): array
+    {
+        $formatter = config('psgc.response_formatter');
+
+        if ($formatter !== null) {
+            return self::callFormatter($formatter, $resource);
+        }
+
+        if ((string) config('psgc.response_format', 'datatable') === 'pagination') {
+            return ['data' => $resource];
+        }
+
+        return ['code' => 200, 'data' => $resource];
     }
 
     public static function paginationResponse($collection): array
@@ -77,22 +91,6 @@ class Utility
         }
 
         return (array) $formatter($collection);
-    }
-
-    /**
-     * The pre-config host-app hook.
-     *
-     * @deprecated Superseded by the `psgc.response_formatter` config key. This
-     *             fallback is kept so existing host apps keep their envelope on
-     *             upgrade, and is scheduled for removal in 2.0.
-     */
-    protected static function legacyHostFormatter(): ?string
-    {
-        $legacy = \App\Libraries\UtilityLibrary::class;
-
-        return class_exists($legacy) && method_exists($legacy, 'dataTableResponse')
-            ? $legacy
-            : null;
     }
 
     /**

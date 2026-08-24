@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Schoolees\Psgc\Pagination\OffsetPaginator;
+use Schoolees\Psgc\Support\PsgcCache;
 use Schoolees\Psgc\Support\QueryOptions;
 
 abstract class SearchablePsgcService
@@ -39,17 +40,44 @@ abstract class SearchablePsgcService
             $applied[$column] = $value;
         }
 
+        // LIKE is case-insensitive on MySQL but case-sensitive on PostgreSQL,
+        // which has ILIKE for the case-insensitive match callers expect.
+        $operator = $model->getConnection()->getDriverName() === 'pgsql' ? 'ILIKE' : 'LIKE';
+
         foreach ($this->filtersFor($model, $where, $searchable['query_like'] ?? []) as $column => $value) {
             $applied[$column] = $value;
             $pattern = '%' . QueryOptions::escapeLike((string) $value) . '%';
 
             // $column always comes from the model's own getSearchable() whitelist, never user input.
             // Each filter is its own AND condition: passing two filters narrows, never widens.
-            $query->whereRaw("{$column} LIKE ? ESCAPE ?", [$pattern, '\\']);
+            $query->whereRaw("{$column} {$operator} ? ESCAPE ?", [$pattern, '\\']);
         }
 
-        return $this->paginateAtOffset($query, $orderBy, $sortBy, $limit, $offset)
+        $cacheKey = PsgcCache::enabled()
+            ? PsgcCache::key($model::class, [
+                'filters' => $applied,
+                'order'   => [$orderBy, $sortBy],
+                'limit'   => $limit,
+                'offset'  => $offset,
+            ])
+            : null;
+
+        return $this->paginateAtOffset($query, $orderBy, $sortBy, $limit, $offset, $cacheKey)
             ->withAppliedFilters($applied);
+    }
+
+    /**
+     * Look a single record up by its PSGC code.
+     */
+    protected function findByCode(Model $model, string $code): ?Model
+    {
+        $fetch = fn () => $model->newQuery()->find($code);
+
+        if (! PsgcCache::enabled()) {
+            return $fetch();
+        }
+
+        return PsgcCache::remember(PsgcCache::key($model::class, ['code' => $code]), $fetch);
     }
 
     /**
@@ -103,15 +131,24 @@ abstract class SearchablePsgcService
         string $orderBy,
         string $sortBy,
         int $limit,
-        int $offset
+        int $offset,
+        ?string $cacheKey = null
     ): OffsetPaginator {
-        $total = (clone $query)->toBase()->getCountForPagination();
+        $fetch = function () use ($query, $orderBy, $sortBy, $limit, $offset): array {
+            $total = (clone $query)->toBase()->getCountForPagination();
 
-        $items = $offset < $total
-            ? $query->orderBy($orderBy, $sortBy)->offset($offset)->limit($limit)->get()
-            : $query->getModel()->newCollection();
+            $items = $offset < $total
+                ? $query->orderBy($orderBy, $sortBy)->offset($offset)->limit($limit)->get()
+                : $query->getModel()->newCollection();
 
-        $paginator = new OffsetPaginator($items, $total, $limit, $offset, [
+            return ['total' => $total, 'items' => $items];
+        };
+
+        $payload = $cacheKey !== null
+            ? PsgcCache::remember($cacheKey, $fetch)
+            : $fetch();
+
+        $paginator = new OffsetPaginator($payload['items'], $payload['total'], $limit, $offset, [
             'path'     => Paginator::resolveCurrentPath(),
             'pageName' => 'page',
         ]);

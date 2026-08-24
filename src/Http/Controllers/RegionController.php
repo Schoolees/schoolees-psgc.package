@@ -7,6 +7,7 @@ use Schoolees\Psgc\Http\Resources\RegionResources;
 use Schoolees\Psgc\Services\RegionService;
 use Schoolees\Psgc\Support\QueryOptions;
 use Schoolees\Psgc\Support\Utility;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class RegionController
@@ -28,6 +29,21 @@ class RegionController
             );
 
             return Utility::dataTableResponse(RegionResources::collection($collection));
+        } catch (Throwable $e) {
+            return Utility::jsonException($e);
+        }
+    }
+
+    public function show(string $code): array|JsonResponse
+    {
+        try {
+            $record = $this->service->findRegion($code);
+
+            if ($record === null) {
+                throw new NotFoundHttpException("No region found for code [{$code}].");
+            }
+
+            return Utility::itemResponse(new RegionResources($record));
         } catch (Throwable $e) {
             return Utility::jsonException($e);
         }

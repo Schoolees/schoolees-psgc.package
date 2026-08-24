@@ -192,8 +192,8 @@ class City extends Model
     public function getSearchable(): array
     {
         return [
-            'query' => ['code','region_code','province_code','is_city'],
-            'query_like' => ['name','city_class'],
+            'query' => ['code','region_code','province_code','is_city','city_class'],
+            'query_like' => ['name'],
         ];
     }
 

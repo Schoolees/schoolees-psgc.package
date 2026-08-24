@@ -20,12 +20,17 @@ class BarangayService extends SearchablePsgcService
         return $this->paginateSearchable(
             $this->model,
             $where,
-            ['code', 'name', 'city_code', 'created_at', 'updated_at'],
+            ['code', 'name', 'city_code'],
             $orderBy,
             $sortBy,
             $limit,
             $offset,
             $page
         );
+    }
+
+    public function findBarangay(string $code): ?Barangay
+    {
+        return $this->findByCode($this->model, $code);
     }
 }

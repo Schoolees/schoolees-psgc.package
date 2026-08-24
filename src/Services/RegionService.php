@@ -20,12 +20,17 @@ class RegionService extends SearchablePsgcService
         return $this->paginateSearchable(
             $this->model,
             $where,
-            ['code', 'name', 'short_name', 'created_at', 'updated_at'],
+            ['code', 'name', 'short_name'],
             $orderBy,
             $sortBy,
             $limit,
             $offset,
             $page
         );
+    }
+
+    public function findRegion(string $code): ?Region
+    {
+        return $this->findByCode($this->model, $code);
     }
 }

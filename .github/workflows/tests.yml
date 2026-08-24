@@ -30,16 +30,6 @@ jobs:
           # Laravel 13 requires PHP 8.3+.
           - { php: '8.3', laravel: '13', testbench: '11' }
           - { php: '8.4', laravel: '13', testbench: '11' }
-          #
-          # Laravel 10 and 11 are deliberately absent. Every release on those
-          # branches now carries an unpatched security advisory, so Composer's
-          # default policy refuses to resolve them and nothing can be installed
-          # to test against. Including them would mean disabling advisory
-          # checking in CI, which is not a trade worth making.
-          #
-          # composer.json still declares ^10.0|^11.0 for consumers already on
-          # those branches, but that claim is now untested. Dropping it is a
-          # breaking change and needs a deliberate decision.
 
     steps:
       - uses: actions/checkout@v4
@@ -64,4 +54,47 @@ jobs:
         run: composer show laravel/framework orchestra/testbench phpunit/phpunit | grep -E '^(name|versions)' || true
 
       - name: Run tests
+        run: vendor/bin/phpunit
+
+  mysql:
+    name: MySQL 8
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: psgc_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_mysql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      # SQLite ignores VARCHAR lengths and stores booleans as integers, so the
+      # index-width and boolean-filter behaviour can only be proven here.
+      - name: Run tests against MySQL
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: psgc_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
         run: vendor/bin/phpunit

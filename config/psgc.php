@@ -141,6 +141,27 @@ return [
     | should truncate existing records before inserting new ones.
     |
     */
+    /*
+    |--------------------------------------------------------------------------
+    | Caching
+    |--------------------------------------------------------------------------
+    |
+    | PSGC data only changes when the dataset is re-seeded, so lookups are safe
+    | to cache for long periods. Off by default.
+    |
+    | store => cache store to use, or null for the application default
+    | ttl   => seconds to keep an entry (default one day)
+    |
+    | The seeder invalidates the cache automatically. To do it by hand, run
+    | `php artisan psgc:cache-clear`.
+    |
+    */
+    'cache' => [
+        'enabled' => env('PSGC_CACHE', false),
+        'store'   => env('PSGC_CACHE_STORE'),
+        'ttl'     => 86400,
+    ],
+
     'resources_path' => base_path('resources/psgc'),
     'truncate_before_seed' => true,
 

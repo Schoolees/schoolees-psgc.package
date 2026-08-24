@@ -2,7 +2,7 @@
 
 namespace Schoolees\Psgc\Tests\Feature;
 
-use Schoolees\Psgc\Console\InstallPsgcCommand;
+use Schoolees\Psgc\Console\Commands\InstallPsgcCommand;
 use Schoolees\Psgc\Tests\TestCase;
 
 class InstallPsgcCommandTest extends TestCase

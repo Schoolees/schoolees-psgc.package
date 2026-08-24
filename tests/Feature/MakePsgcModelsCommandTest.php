@@ -40,8 +40,9 @@ class MakePsgcModelsCommandTest extends TestCase
         $this->assertStringContainsString("'query_like' => ['name','short_name']", $region);
         $this->assertStringContainsString("protected \$casts = [", $city);
         $this->assertStringContainsString("'is_city' => 'boolean'", $city);
-        $this->assertStringContainsString("'query' => ['code','region_code','province_code','is_city']", $city);
-        $this->assertStringContainsString("'query_like' => ['name','city_class']", $city);
+        // city_class is an exact filter: as a LIKE it made ?city_class=CC also match ICC.
+        $this->assertStringContainsString("'query' => ['code','region_code','province_code','is_city','city_class']", $city);
+        $this->assertStringContainsString("'query_like' => ['name']", $city);
     }
 
     public function test_generated_models_are_syntactically_valid_php(): void
