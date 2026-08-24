@@ -87,3 +87,8 @@ DB_USERNAME=root DB_PASSWORD=root vendor/bin/phpunit
   Delete the duplicate on the release branch first.
 - Never hand-tag, and never disable Composer's security-advisory policy to make a
   build resolve.
+- An already-open release PR does **not** re-evaluate itself when
+  `.release-please-config.json` changes: Release Please updates the existing PR
+  rather than reconsidering whether it should exist. To force a clean
+  evaluation, close the PR, delete the `release-please--branches--main` branch,
+  then re-run the Release workflow (`gh workflow run release.yml`).
