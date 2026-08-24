@@ -15,6 +15,10 @@ class SortIndexTest extends TestCase
      */
     public function test_default_sort_column_is_backed_by_a_usable_index(): void
     {
+        if ($this->onMysql()) {
+            $this->markTestSkipped('EXPLAIN QUERY PLAN is SQLite-specific; MySQL is covered by the column-width test.');
+        }
+
         $tables = [
             (string) config('psgc.tables.regions', 'regions'),
             (string) config('psgc.tables.provinces', 'provinces'),
