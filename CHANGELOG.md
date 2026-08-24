@@ -1,5 +1,42 @@
 # Changelog
 
+## [2.0.0](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.3...v2.0.0) (2026-08-24)
+
+> Upgrading from 1.x? See [UPGRADE.md](UPGRADE.md) for the migration path for each breaking change.
+
+
+### ⚠ BREAKING CHANGES
+
+* ?city_class= now matches exactly rather than as a substring, and ?order_by=created_at / updated_at fall back to the default sort column.
+* \App\Libraries\UtilityLibrary is no longer auto-detected -- set psgc.response_formatter instead. InstallPsgcCommand moved to Schoolees\Psgc\Console\Commands. The psgc:test-publish command is removed.
+* requires PHP 8.2+ and Laravel 12 or 13. Consumers on Laravel 10 or 11 should stay on ^1.1.
+
+### Features
+
+* **api:** add single-record endpoints ([8b1abf9](https://github.com/Schoolees/schoolees-psgc.package/commit/8b1abf9050efb2500b77ca8f9df18e19909b0951))
+* **cache:** opt-in caching for PSGC lookups ([bade046](https://github.com/Schoolees/schoolees-psgc.package/commit/bade046a7732d7ee6f182500252ca003e7067751))
+* require Laravel 12+ and cover MySQL in CI ([e47c73f](https://github.com/Schoolees/schoolees-psgc.package/commit/e47c73faf8b874bca48704352551bd1ac4946861))
+
+
+### Bug Fixes
+
+* match city_class exactly, drop timestamp sorting, use ILIKE on PostgreSQL ([c39967a](https://github.com/Schoolees/schoolees-psgc.package/commit/c39967ab8fe580d6725e319513afc080080718b5))
+
+
+### Refactoring
+
+* remove the legacy host-app hook and tidy the console namespace ([c60221c](https://github.com/Schoolees/schoolees-psgc.package/commit/c60221ce5585d125ace5273b422519b732a8322f))
+
+
+### Continuous Integration
+
+* surface every commit type in the generated changelog ([4ec2d81](https://github.com/Schoolees/schoolees-psgc.package/commit/4ec2d81d83e53613601a6ef6dde8beab4a80fbc2))
+
+
+### Documentation
+
+* add a 2.0 upgrade guide and document the new surface ([04d25ee](https://github.com/Schoolees/schoolees-psgc.package/commit/04d25ee002a4e35c3ffc63bcd6fb5fcd0ddcc31f))
+
 ## [1.1.3](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.2...v1.1.3) (2026-08-24)
 
 
