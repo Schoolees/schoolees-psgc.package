@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.1...v2.0.2) (2026-08-24)
+
+
+### Build System & Dependencies
+
+* ship the README and stop shipping internal files ([d7519fc](https://github.com/Schoolees/schoolees-psgc.package/commit/d7519fcdd86d4915898c37bc5abbdff7fdaefc12))
+
 ## [2.0.1](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.0...v2.0.1) (2026-08-24)
 
 
