@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.3](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.2...v1.1.3) (2026-08-24)
+
+
+### Bug Fixes
+
+* **api:** configurable response envelope, filters echo, and error logging ([28e3143](https://github.com/Schoolees/schoolees-psgc.package/commit/28e3143322bb0aa6ce2222e59dbc362356fbe19c))
+* **db:** bound the indexed code columns to 20 characters ([0ea9d6f](https://github.com/Schoolees/schoolees-psgc.package/commit/0ea9d6f343b0e97aa8a69dfa6751599d2a95ed12))
+
 ## [1.1.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.1...v1.1.2) (2026-08-24)
 
 
