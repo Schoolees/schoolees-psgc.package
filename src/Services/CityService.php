@@ -20,12 +20,17 @@ class CityService extends SearchablePsgcService
         return $this->paginateSearchable(
             $this->model,
             $where,
-            ['code', 'name', 'region_code', 'province_code', 'is_city', 'city_class', 'created_at', 'updated_at'],
+            ['code', 'name', 'region_code', 'province_code', 'is_city', 'city_class'],
             $orderBy,
             $sortBy,
             $limit,
             $offset,
             $page
         );
+    }
+
+    public function findCity(string $code): ?City
+    {
+        return $this->findByCode($this->model, $code);
     }
 }

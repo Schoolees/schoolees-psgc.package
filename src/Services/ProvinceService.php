@@ -20,12 +20,17 @@ class ProvinceService extends SearchablePsgcService
         return $this->paginateSearchable(
             $this->model,
             $where,
-            ['code', 'name', 'region_code', 'created_at', 'updated_at'],
+            ['code', 'name', 'region_code'],
             $orderBy,
             $sortBy,
             $limit,
             $offset,
             $page
         );
+    }
+
+    public function findProvince(string $code): ?Province
+    {
+        return $this->findByCode($this->model, $code);
     }
 }
