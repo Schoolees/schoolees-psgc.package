@@ -7,6 +7,7 @@ use Schoolees\Psgc\Http\Resources\ProvinceResources;
 use Schoolees\Psgc\Services\ProvinceService;
 use Schoolees\Psgc\Support\QueryOptions;
 use Schoolees\Psgc\Support\Utility;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class ProvinceController
@@ -28,6 +29,21 @@ class ProvinceController
             );
 
             return Utility::dataTableResponse(ProvinceResources::collection($collection));
+        } catch (Throwable $e) {
+            return Utility::jsonException($e);
+        }
+    }
+
+    public function show(string $code): array|JsonResponse
+    {
+        try {
+            $record = $this->service->findProvince($code);
+
+            if ($record === null) {
+                throw new NotFoundHttpException("No province found for code [{$code}].");
+            }
+
+            return Utility::itemResponse(new ProvinceResources($record));
         } catch (Throwable $e) {
             return Utility::jsonException($e);
         }

@@ -7,6 +7,7 @@ use Schoolees\Psgc\Http\Resources\CityResources;
 use Schoolees\Psgc\Services\CityService;
 use Schoolees\Psgc\Support\QueryOptions;
 use Schoolees\Psgc\Support\Utility;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class CityController
@@ -28,6 +29,21 @@ class CityController
             );
 
             return Utility::dataTableResponse(CityResources::collection($collection));
+        } catch (Throwable $e) {
+            return Utility::jsonException($e);
+        }
+    }
+
+    public function show(string $code): array|JsonResponse
+    {
+        try {
+            $record = $this->service->findCity($code);
+
+            if ($record === null) {
+                throw new NotFoundHttpException("No city found for code [{$code}].");
+            }
+
+            return Utility::itemResponse(new CityResources($record));
         } catch (Throwable $e) {
             return Utility::jsonException($e);
         }

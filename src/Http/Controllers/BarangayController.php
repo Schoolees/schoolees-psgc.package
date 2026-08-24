@@ -7,6 +7,7 @@ use Schoolees\Psgc\Http\Resources\BarangayResources;
 use Schoolees\Psgc\Services\BarangayService;
 use Schoolees\Psgc\Support\QueryOptions;
 use Schoolees\Psgc\Support\Utility;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class BarangayController
@@ -28,6 +29,21 @@ class BarangayController
             );
 
             return Utility::dataTableResponse(BarangayResources::collection($collection));
+        } catch (Throwable $e) {
+            return Utility::jsonException($e);
+        }
+    }
+
+    public function show(string $code): array|JsonResponse
+    {
+        try {
+            $record = $this->service->findBarangay($code);
+
+            if ($record === null) {
+                throw new NotFoundHttpException("No barangay found for code [{$code}].");
+            }
+
+            return Utility::itemResponse(new BarangayResources($record));
         } catch (Throwable $e) {
             return Utility::jsonException($e);
         }
