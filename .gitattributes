@@ -1,10 +1,21 @@
-# Ignore files from exports
-/tests export-ignore
-/.github export-ignore
-/.gitignore export-ignore
-/.gitattributes export-ignore
-/phpunit.xml export-ignore
-/README.md export-ignore
+# Keep the dist tarball to what a consumer actually needs.
+# Everything listed here is development or repo infrastructure: shipping it
+# means every `composer require` downloads files that cannot be used.
+/tests                        export-ignore
+/.github                      export-ignore
+/.claude                      export-ignore
+/.gitignore                   export-ignore
+/.gitattributes               export-ignore
+/phpunit.xml.dist             export-ignore
+/.release-please-config.json  export-ignore
+/.release-please-manifest.json export-ignore
+/AGENTS.md                    export-ignore
+/CONTRIBUTING.md              export-ignore
+/_config.yml                  export-ignore
+/CNAME                        export-ignore
+
+# README.md, UPGRADE.md, CHANGELOG.md and LICENSE are deliberately NOT
+# export-ignored: they are the documentation a consumer needs on disk.
 
 # Normalize line endings
 * text=auto
