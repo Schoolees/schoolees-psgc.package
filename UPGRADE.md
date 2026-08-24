@@ -112,16 +112,34 @@ Code columns are `varchar(20)` rather than an unbounded `varchar(255)`. Under
 utf8mb4 the old width put the cities composite index at 3060 bytes against
 InnoDB's 3072-byte limit.
 
-**Existing tables are not altered.** A `change()` migration would need
-`doctrine/dbal`. To shrink them yourself:
+**Existing tables are migrated automatically.** Run:
 
-```sql
-ALTER TABLE cities
-  MODIFY code          VARCHAR(20) NOT NULL,
-  MODIFY region_code   VARCHAR(20) NOT NULL,
-  MODIFY province_code VARCHAR(20) NULL,
-  MODIFY city_class    VARCHAR(20) NULL;
+```bash
+php artisan migrate
 ```
 
-Run `php artisan migrate` either way — 1.1.2's `name` index migration still
-needs to apply.
+`2025_01_01_000005_shrink_psgc_code_columns` narrows the code columns on
+tables created by 1.x. It uses Laravel's native `->change()`, so **no
+`doctrine/dbal` is required** — that dependency stopped being necessary in
+Laravel 11, and 2.0 requires 12+.
+
+The migration is careful about a few things:
+
+- **It refuses to truncate.** Every column is checked for oversized values
+  first, and it aborts with the offending length rather than letting MySQL
+  silently cut data short in non-strict mode — which, on a primary key, would
+  mean losing rows to duplicate keys. PSGC codes are at most 10 characters, so
+  this only trips on non-PSGC data.
+- **It preserves nullability.** `cities.province_code` is `NULL` for every
+  HUC/ICC, and `->change()` restates the whole column definition, so getting
+  this wrong would fail against existing rows.
+- **It skips columns already the right width**, so a fresh 2.0 install does not
+  pay for a table rebuild it does not need.
+- **It only runs on MySQL, MariaDB and PostgreSQL.** SQLite does not enforce
+  `VARCHAR` lengths, so there is nothing to gain there and a full table rebuild
+  to lose.
+
+It is reversible with `php artisan migrate:rollback`.
+
+> On a large `barangays` table (~42k rows) this rebuilds indexes and will take
+> a moment. It is a normal `ALTER TABLE`, so plan it like any other.
