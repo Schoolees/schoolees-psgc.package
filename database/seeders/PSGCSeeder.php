@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
+use Schoolees\Psgc\Support\PsgcCache;
 
 class PSGCSeeder extends Seeder
 {
@@ -39,6 +40,9 @@ class PSGCSeeder extends Seeder
             ['code'],
             ['name', 'city_code', 'updated_at']
         );
+
+        // The data just changed underneath any cached lookups.
+        PsgcCache::flush();
     }
 
     protected function seed(
