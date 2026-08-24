@@ -2,6 +2,8 @@
 
 ## [2.0.0](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.3...v2.0.0) (2026-08-24)
 
+> Upgrading from 1.x? See [UPGRADE.md](UPGRADE.md) for the migration path for each breaking change.
+
 
 ### ⚠ BREAKING CHANGES
 
