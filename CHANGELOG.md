@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.0...v2.0.1) (2026-08-24)
+
+
+### Bug Fixes
+
+* **db:** shrink code columns on tables created by 1.x ([32c2753](https://github.com/Schoolees/schoolees-psgc.package/commit/32c2753a7179af914a1e650b78fd742fe14dbd6e))
+* **db:** shrink code columns on tables created by 1.x ([04b8138](https://github.com/Schoolees/schoolees-psgc.package/commit/04b813830a03f164536063de60229c35d20279e5))
+
 ## [2.0.0](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.3...v2.0.0) (2026-08-24)
 
 > Upgrading from 1.x? See [UPGRADE.md](UPGRADE.md) for the migration path for each breaking change.
