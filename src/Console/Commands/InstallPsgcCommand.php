@@ -1,6 +1,6 @@
 <?php
 
-namespace Schoolees\Psgc\Console;
+namespace Schoolees\Psgc\Console\Commands;
 
 use Illuminate\Console\Command;
 

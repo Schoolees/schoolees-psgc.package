@@ -3,7 +3,8 @@
 namespace Schoolees\Psgc\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Schoolees\Psgc\Console\InstallPsgcCommand;
+use Schoolees\Psgc\Console\Commands\ClearPsgcCache;
+use Schoolees\Psgc\Console\Commands\InstallPsgcCommand;
 use Schoolees\Psgc\Console\Commands\MakePsgcModels;
 use Schoolees\Psgc\Console\Commands\PublishPsgcRoutes;
 
@@ -62,18 +63,12 @@ class PsgcServiceProvider extends ServiceProvider
          * Console commands
          */
         if ($this->app->runningInConsole()) {
-            $commands = [
+            $this->commands([
                 InstallPsgcCommand::class,
                 MakePsgcModels::class,
                 PublishPsgcRoutes::class, // one-step: publish routes file + append include to routes/web.php
-            ];
-
-            // Optionally register if present in your package
-            if (class_exists(\Schoolees\Psgc\Console\TestPublishCommand::class)) {
-                $commands[] = \Schoolees\Psgc\Console\TestPublishCommand::class;
-            }
-
-            $this->commands($commands);
+                ClearPsgcCache::class,
+            ]);
         }
     }
 }
