@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.1...v2.0.2) (2026-08-24)
+
+
+### Documentation
+
+* bring the contributor guide and review skill up to date with 2.0 ([96269dd](https://github.com/Schoolees/schoolees-psgc.package/commit/96269dd84733b842794b05a2c01f8c4e4df0c2fa))
+
 ## [2.0.1](https://github.com/Schoolees/schoolees-psgc.package/compare/v2.0.0...v2.0.1) (2026-08-24)
 
 
