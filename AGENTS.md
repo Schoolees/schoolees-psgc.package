@@ -62,8 +62,14 @@ DB_USERNAME=root DB_PASSWORD=root vendor/bin/phpunit
 - Use Conventional Commits for all new commits.
 - Format: `type(scope): short summary` (examples: `feat(test): add regions endpoint test`, `fix(seeder): honor resources_path config`).
 - Common types: `feat`, `fix`, `perf`, `refactor`, `test`, `docs`, `build`, `ci`, `chore`.
-- Only `feat`, `fix` and `perf` cut a release. Mark breaking changes with `!` or a
-  `BREAKING CHANGE:` footer — that is what produces a major version.
+- `feat`, `fix`, `perf`, `refactor` and `build` cut a release and appear in the
+  changelog. `docs`, `ci`, `test` and `chore` do neither — they are hidden in
+  `.release-please-config.json`, because release-please cannot show a type in the
+  changelog without also making it releasable
+  (googleapis/release-please#2638), and none of them change what a consumer
+  installs. If you want doc work in a release, land it alongside a code commit.
+- Mark breaking changes with `!` or a `BREAKING CHANGE:` footer — that is what
+  produces a major version.
 - Automated releases are handled by Release Please via `.github/workflows/release.yml`; do not create manual version tags.
 - Keep commit history clean and conventional so automated semantic versioning stays accurate.
 - A commit should say, where relevant:

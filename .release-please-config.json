@@ -28,16 +28,19 @@
       "section": "Build System & Dependencies"
     },
     {
-      "type": "ci",
-      "section": "Continuous Integration"
+      "type": "docs",
+      "section": "Documentation",
+      "hidden": true
     },
     {
-      "type": "docs",
-      "section": "Documentation"
+      "type": "ci",
+      "section": "Continuous Integration",
+      "hidden": true
     },
     {
       "type": "test",
-      "section": "Tests"
+      "section": "Tests",
+      "hidden": true
     },
     {
       "type": "chore",
