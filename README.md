@@ -104,6 +104,21 @@ GET /psgc/barangays?city_code=1380600000
 }
 ```
 
+**Pagination response mode**
+
+`response_format` decides the envelope. The example above is the default `datatable` shape; setting it to `pagination` returns the generic Laravel resource payload instead, with the same `filters` echo:
+
+```json
+{
+  "data": [ { "code": "1380600000", "name": "City of Manila" } ],
+  "meta": { "current_page": 1, "per_page": 10, "total": 1 },
+  "links": { "first": "...", "last": "...", "prev": null, "next": null },
+  "filters": { "code": "1380600000" }
+}
+```
+
+Errors answer as `{"code": <status>, "error": "<message>"}`. A 5xx message is replaced with `Server Error` unless `app.debug` is on, so an internal exception is never echoed to an API caller.
+
 **Filtering and Searching**
 
 You can filter results by passing query parameters. Refer to the `getSearchable()` method on each model for available filterable fields.
@@ -163,17 +178,21 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 'register_package_routes' => false,
 ```
 
-**Pagination safety override:**
-```php
-// config/psgc.php
-'max_limit' => 100, // caps ?limit=...
-```
+**Configuration reference (`config/psgc.php`):**
 
-**Response format override:**
-```php
-// config/psgc.php
-'response_format' => 'datatable', // or 'pagination'
-```
+| Key | Default | What it does |
+| --- | --- | --- |
+| `api_prefix` | `psgc` | URL prefix for every route (`PSGC_API_PREFIX`). |
+| `middleware` | `['api']` | Middleware applied to the package's route group. |
+| `register_package_routes` | `true` | Set to `false` when using published `routes/psgc.php`, to avoid duplicates. |
+| `append_include_on_publish` | `false` | Whether `psgc:publish-routes` appends the include to `routes/web.php`. |
+| `response_format` | `datatable` | `datatable` or `pagination` (see above). |
+| `paginate` | `10` | Default page size. |
+| `max_limit` | `100` | Caps `?limit=`. |
+| `order_by` | `name` | Default sort column. |
+| `tables` | region/province/city/barangay names | Table names, if yours differ. |
+| `resources_path` | `base_path('resources/psgc')` | Where the JSON dataset is read from when seeding. |
+| `truncate_before_seed` | `true` | Whether a seed empties the tables first. |
 
 ## 📜 License
 This package is open-sourced software licensed under the MIT license.
