@@ -5,7 +5,6 @@
 
 ### Bug Fixes
 
-* **api:** correct filter and pagination input handling ([fe9c66c](https://github.com/Schoolees/schoolees-psgc.package/commit/fe9c66c93cea26e191b07eaf47d9e60626de5a24))
 * **api:** correct filter and pagination input handling ([e1aecaf](https://github.com/Schoolees/schoolees-psgc.package/commit/e1aecafe23bef2afd244dcdf5947d31fd3a2857a))
 
 
