@@ -26,7 +26,10 @@ php artisan psgc:publish-routes --force
 ## Coding Style & Naming Conventions
 - PHP: 4-space indentation, PSR-12 conventions, `PascalCase` classes, `camelCase` methods/vars.
 - Keep namespaces under `Schoolees\\Psgc\\...` and autoloaded from `src/`.
-- Preserve compatibility: PHP `^8.1` and Laravel `10|11|12` (see `composer.json`).
+- Preserve compatibility: PHP `^8.2` and Laravel `12|13` (see `composer.json`).
+  2.0 dropped Laravel 10 and 11 deliberately: every release on those branches
+  carries an unpatched security advisory, so Composer will not resolve them and
+  CI cannot test against them. Do not widen the constraint back.
 - Prefer explicit braces for control flow; avoid one-line `foreach` bodies in new code.
 
 ## Testing Guidelines
@@ -34,16 +37,47 @@ php artisan psgc:publish-routes --force
 ```bash
 composer test
 ```
+- That runs against in-memory SQLite, which **skips 9 tests**: SQLite ignores
+  `VARCHAR` lengths and has no native boolean, so column widths, InnoDB index
+  headroom, boolean filtering and the shrink migration can only be proven on
+  MySQL. To run those locally:
+```bash
+docker run -d --name psgc-mysql -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=psgc_test -p 33061:3306 mysql:8
+
+DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_PORT=33061 DB_DATABASE=psgc_test \
+DB_USERNAME=root DB_PASSWORD=root vendor/bin/phpunit
+```
+- CI (`.github/workflows/tests.yml`) covers PHP 8.2-8.4 x Laravel 12-13 on
+  SQLite, plus one MySQL 8 job. A green local run is not proof CI will pass.
 - Use `tests/Feature/*Test.php` for endpoint behavior and add regression tests for bugs you fix.
 - If a change touches migrations/seeders/routes, also smoke-test in a Laravel host app.
 
-## Commit & Pull Request Guidelines
+## Commit & Branching Guidelines
+- **Work lands directly on `main`.** This repo does not use feature branches or
+  pull requests; commit to `main` and push. `main` is the only branch, aside from
+  the `release-please--branches--main` branch Release Please creates for itself.
+- Because nothing gates the push, run `composer test` **before** pushing. CI runs
+  on `main` but reports after the fact.
 - Use Conventional Commits for all new commits.
 - Format: `type(scope): short summary` (examples: `feat(test): add regions endpoint test`, `fix(seeder): honor resources_path config`).
-- Common types: `feat`, `fix`, `test`, `docs`, `refactor`, `chore`.
+- Common types: `feat`, `fix`, `perf`, `refactor`, `test`, `docs`, `build`, `ci`, `chore`.
+- Only `feat`, `fix` and `perf` cut a release. Mark breaking changes with `!` or a
+  `BREAKING CHANGE:` footer — that is what produces a major version.
 - Automated releases are handled by Release Please via `.github/workflows/release.yml`; do not create manual version tags.
 - Keep commit history clean and conventional so automated semantic versioning stays accurate.
-- PRs should include:
+- A commit should say, where relevant:
   - What changed and why (especially for migrations, routes, and config defaults).
   - Notes for dataset updates (file(s) under `resources/psgc/` plus the PSA source/version, also update `README.md`).
   - Steps to validate in a host app (commands run, endpoints exercised).
+- Breaking changes also need an entry in `UPGRADE.md` with the migration path.
+
+## Releasing
+- A push to `main` makes Release Please open a `chore(main): release X.Y.Z` PR.
+  Merging that PR tags the release and syncs Packagist. That PR is the one
+  exception to the no-PR rule, and it is created automatically.
+- Before merging it, check `CHANGELOG.md` for a **duplicated entry**: if a commit
+  subject is repeated by a merge commit, Release Please records the work twice.
+  Delete the duplicate on the release branch first.
+- Never hand-tag, and never disable Composer's security-advisory policy to make a
+  build resolve.

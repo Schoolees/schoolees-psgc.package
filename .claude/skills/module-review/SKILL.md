@@ -28,6 +28,7 @@ For an entity `X` (Region, Province, City, Barangay), the slice is:
 | Migration | `database/migrations/*_create_Xs_table.php` | columns, indexes |
 | Seeder | `database/seeders/PSGCSeeder.php` | upsert keys + update columns |
 | Config | `config/psgc.php` | `tables.Xs` |
+| Cache | `src/Support/PsgcCache.php` | key shape, version-counter invalidation |
 | Provider | `src/Providers/PsgcServiceProvider.php` | publish tags |
 
 ## Review procedure
@@ -67,30 +68,48 @@ only tests that assert a fixed bug).
 vendor/bin/phpunit --filter ProbeTest
 ```
 
-Probe each of these against the endpoint under review:
+Every item below is a **regression check**: each one was a real shipped bug,
+fixed in 1.1.2 or 2.0, with a test now guarding it. The expected behaviour is
+what is stated. If a probe disagrees, something has regressed.
 
-- **`?page=2`** — does it actually return page 2? The controller reads `offset`,
-  not `page`; confirm the paginator's own `links.next` is followable.
-- **`?limit=N&offset=M` where `M` is not a multiple of `N`** — `pageFromOffset()`
-  quantizes to page boundaries, so a partial offset is silently rounded down.
-- **Boolean columns** (`is_city`) — `?is_city=true` sends the *string* `"true"`.
-  Check the row count is non-zero and correct. This behaves differently on SQLite
-  (matches nothing) and MySQL (`'true'` casts to `0`, matching the opposite).
-- **Two `query_like` filters at once** — they are grouped in a single `orWhere`,
-  so they OR rather than AND. Confirm the intended semantics.
-- **Array input**: `?name[]=a&name[]=b` — must not 500.
-- **Empty input**: `?code=` — an empty exact filter matches no rows.
-- **Unknown params**: `?bogus=1` — must be ignored, not crash.
-- **Hostile `order_by`**: `?order_by=code;DROP TABLE x` — must fall back to the
-  configured default, never reach SQL.
-- **`?limit=` above `max_limit`** — must clamp.
-- **Both envelopes**: run once with `psgc.response_format=datatable` and once with
-  `pagination`; both must be well-formed for the same query.
+| Probe | Expected | Regressed if |
+|---|---|---|
+| `?page=2` | Returns the second page; the paginator's own `links.next` is followable | It returns page 1 |
+| `?limit=N&offset=M`, `M` not a multiple of `N` | Skips exactly `M` rows; `meta.from`/`meta.to` reflect the true offset | The offset snaps to a page boundary |
+| `?is_city=true` / `false` / `1` / `0` / `yes` / `no` | Matches the intended rows, cast via the model's `$casts` | Empty on SQLite, or *inverted* on MySQL |
+| Two `query_like` filters at once | AND — adding a filter narrows | Adding a filter widens the result set |
+| `?name[]=a&name[]=b` | 200, filter ignored | HTTP 500 |
+| `?code=` (blank) | Filter ignored, all rows | Zero rows |
+| `?bogus=1` | Ignored | Crash, or leaks into the query |
+| `?order_by=code;DROP TABLE x` | Falls back to the configured default column | Reaches SQL |
+| `?limit=` above `max_limit` | Clamps to `max_limit` | Honours the larger value |
+| `?city_class=CC` | Exact match only | Also returns `ICC` |
+| `?order_by=created_at` | Falls back to the default column; `sort_by` still honoured | Sorts by the timestamp |
+| `GET /{resource}/{code}` | The record, or 404 for an unknown code | 200 with an empty body, or a 500 |
+| Both envelopes | Well-formed under `datatable` **and** `pagination` for the same query | Either is malformed |
+| With `psgc.cache.enabled=true`, the same query twice | Second request issues no query | It re-queries, or serves a *different* query's result |
 
-Tests run on SQLite in-memory (`tests/TestCase.php`) but the package targets
-MySQL/MariaDB. For anything touching booleans, `LIKE`, or collation, state
-explicitly how the behavior differs on MySQL and PostgreSQL — `LIKE` is
-case-insensitive on MySQL and case-sensitive on PostgreSQL.
+Anything genuinely new — a filter, a column, an endpoint — still needs probing
+from scratch. This table is the floor, not the ceiling.
+
+### Drivers lie differently
+
+`composer test` runs on in-memory SQLite and **skips 9 tests**. SQLite ignores
+`VARCHAR` lengths and has no native boolean, so column widths, InnoDB index
+headroom, boolean filtering and the shrink migration are only real on MySQL:
+
+```bash
+docker run -d --name psgc-mysql -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=psgc_test -p 33061:3306 mysql:8
+
+DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_PORT=33061 DB_DATABASE=psgc_test \
+DB_USERNAME=root DB_PASSWORD=root vendor/bin/phpunit
+```
+
+Run this before claiming anything about booleans, column widths, or index size.
+`LIKE` is case-insensitive on MySQL and case-sensitive on PostgreSQL, which is
+why `query_like` uses `ILIKE` on `pgsql` — say explicitly how any change behaves
+on each.
 
 ### Phase 3 — Security and input handling
 
@@ -99,10 +118,11 @@ case-insensitive on MySQL and case-sensitive on PostgreSQL.
   directly — verify the whitelist path is airtight for any new column source.
 - LIKE values must go through `QueryOptions::escapeLike()`; `%` and `_` are
   matched literally by contract (documented in README).
-- The `filters` key echoes request input back to the client — confirm nothing
-  unvalidated or sensitive is reflected.
-- `catch (Throwable)` in controllers converts everything to JSON. Confirm
-  non-HTTP exceptions are logged, or they vanish without a trace.
+- The `filters` key echoes request input back per `psgc.filters_echo`
+  (`request` / `applied` / `none`). Under the default `request` it is the raw
+  query string — confirm nothing sensitive can be reflected into it.
+- `catch (Throwable)` in controllers converts everything to JSON. 5xx must reach
+  the log via `psgc.log_exceptions`; 4xx must not be logged as a server failure.
 - Confirm `app.debug=false` does not leak exception messages for 5xx.
 
 ### Phase 4 — Package hygiene
@@ -122,7 +142,14 @@ This ships to Packagist, so host-app assumptions are bugs.
   `config/psgc.php`; a host app that published the config before the key existed
   will not have it.
 - Adding a route or endpoint means updating `README.md` and, for dataset changes,
-  noting the PSA source per `AGENTS.md`.
+  noting the PSA source per `AGENTS.md`. A breaking change also needs an
+  `UPGRADE.md` entry with the migration path.
+- Altering an existing column uses Laravel's native `->change()` — **not**
+  `doctrine/dbal`, which has been unnecessary since Laravel 11. Two traps:
+  `->change()` restates the *whole* definition, so nullability must be repeated
+  or a nullable column silently becomes `NOT NULL`; and narrowing a column must
+  check for oversized values first, since MySQL in non-strict mode truncates
+  silently, which on a primary key loses rows to duplicate keys.
 
 ### Phase 5 — Report
 
