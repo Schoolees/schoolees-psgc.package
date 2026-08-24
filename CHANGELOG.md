@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.2](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.1...v1.1.2) (2026-08-24)
+
+
+### Bug Fixes
+
+* **api:** correct filter and pagination input handling ([e1aecaf](https://github.com/Schoolees/schoolees-psgc.package/commit/e1aecafe23bef2afd244dcdf5947d31fd3a2857a))
+
+
+### Performance Improvements
+
+* **db:** index name on provinces, cities, and barangays ([6285c11](https://github.com/Schoolees/schoolees-psgc.package/commit/6285c11301a9fbfd72d51b4c1ecacccd13122cc8))
+
 ## [1.1.1](https://github.com/Schoolees/schoolees-psgc.package/compare/v1.1.0...v1.1.1) (2026-07-31)
 
 
