@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create(config('psgc.tables.regions', 'regions'), function (Blueprint $table) {
-            $table->string('code')->primary();
+            $table->string('code', 20)->primary();
             $table->string('name');
             $table->string('short_name')->nullable();
             $table->timestamps();

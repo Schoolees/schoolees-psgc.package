@@ -32,11 +32,15 @@ abstract class SearchablePsgcService
 
         $query = $model->newQuery();
 
+        $applied = [];
+
         foreach ($this->filtersFor($model, $where, $searchable['query'] ?? []) as $column => $value) {
             $query->where($column, $value);
+            $applied[$column] = $value;
         }
 
         foreach ($this->filtersFor($model, $where, $searchable['query_like'] ?? []) as $column => $value) {
+            $applied[$column] = $value;
             $pattern = '%' . QueryOptions::escapeLike((string) $value) . '%';
 
             // $column always comes from the model's own getSearchable() whitelist, never user input.
@@ -44,7 +48,8 @@ abstract class SearchablePsgcService
             $query->whereRaw("{$column} LIKE ? ESCAPE ?", [$pattern, '\\']);
         }
 
-        return $this->paginateAtOffset($query, $orderBy, $sortBy, $limit, $offset);
+        return $this->paginateAtOffset($query, $orderBy, $sortBy, $limit, $offset)
+            ->withAppliedFilters($applied);
     }
 
     /**
@@ -99,7 +104,7 @@ abstract class SearchablePsgcService
         string $sortBy,
         int $limit,
         int $offset
-    ): LengthAwarePaginator {
+    ): OffsetPaginator {
         $total = (clone $query)->toBase()->getCountForPagination();
 
         $items = $offset < $total

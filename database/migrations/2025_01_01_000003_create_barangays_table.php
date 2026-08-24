@@ -8,9 +8,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create(config('psgc.tables.barangays', 'barangays'), function (Blueprint $table) {
-            $table->string('code')->primary();
+            $table->string('code', 20)->primary();
             $table->string('name');
-            $table->string('city_code')->index();
+            $table->string('city_code', 20)->index();
             $table->timestamps();
 
             $table->index(['city_code', 'name']);

@@ -8,13 +8,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create(config('psgc.tables.cities', 'cities'), function (Blueprint $table) {
-            $table->string('code')->primary();
+            $table->string('code', 20)->primary();
             $table->string('name');
-            $table->string('region_code')->index();
+            $table->string('region_code', 20)->index();
             // HUC/ICC can be province-independent
-            $table->string('province_code')->nullable()->index();
+            $table->string('province_code', 20)->nullable()->index();
             $table->boolean('is_city')->default(true)->index();
-            $table->string('city_class')->nullable()->index();
+            $table->string('city_class', 20)->nullable()->index();
             $table->timestamps();
 
             $table->index(['region_code', 'province_code', 'name']);

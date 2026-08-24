@@ -1,5 +1,6 @@
 # 📍PSGC Laravel Package
 
+[![Tests](https://github.com/Schoolees/schoolees-psgc.package/actions/workflows/tests.yml/badge.svg)](https://github.com/Schoolees/schoolees-psgc.package/actions/workflows/tests.yml)
 [![Latest Stable Version](https://img.shields.io/packagist/v/schoolees/laravel-psgc.svg?style=flat-square)](https://packagist.org/packages/schoolees/laravel-psgc)
 [![Total Downloads](https://img.shields.io/packagist/dt/schoolees/laravel-psgc.svg?style=flat-square)](https://packagist.org/packages/schoolees/laravel-psgc)
 [![License](https://img.shields.io/packagist/l/schoolees/laravel-psgc.svg?style=flat-square)](LICENSE)
@@ -135,6 +136,32 @@ GET /psgc/barangays?limit=25&page=2   // rows 26-50
 GET /psgc/barangays?limit=25&offset=5 // rows 6-30
 ```
 
+**Customising the response envelope**
+
+Set `psgc.response_formatter` to take over the envelope. It receives the resource collection and returns an array, and it applies in both `response_format` modes:
+
+```php
+// config/psgc.php
+'response_formatter' => fn ($collection) => [
+    'items' => $collection->collection,
+    'total' => $collection->total(),
+],
+```
+
+It accepts a callable, `'Class@method'`, `[Class::class, 'method']`, or a class name that is invokable or exposes `dataTableResponse()`.
+
+> Earlier versions looked for an `\App\Libraries\UtilityLibrary::dataTableResponse()` in the host app. That fallback still works so existing apps keep their envelope, but it is deprecated in favour of this config key and will be removed in 2.0.
+
+**Controlling the `filters` echo**
+
+`filters_echo` decides what the `filters` key contains:
+
+| Value | Behaviour |
+| --- | --- |
+| `request` | The whole query string, echoed back unvalidated. The default, kept for compatibility. |
+| `applied` | Only the filters that actually reached the query — unknown, blank and malformed parameters are omitted. |
+| `none` | An empty object. |
+
 **Filtering and Searching**
 
 You can filter results by passing query parameters. Refer to the `getSearchable()` method on each model for available filterable fields.
@@ -213,6 +240,9 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 | `register_package_routes` | `true` | Set to `false` when using published `routes/psgc.php`, to avoid duplicates. |
 | `append_include_on_publish` | `false` | Whether `psgc:publish-routes` appends the include to `routes/web.php`. |
 | `response_format` | `datatable` | `datatable` or `pagination` (see above). |
+| `response_formatter` | `null` | Optional hook to shape the envelope yourself (see below). |
+| `filters_echo` | `request` | `request`, `applied`, or `none` (see below). |
+| `log_exceptions` | `true` | Also write 5xx responses to the log. |
 | `paginate` | `10` | Default page size. |
 | `max_limit` | `100` | Caps `?limit=`. |
 | `order_by` | `name` | Default sort column, used when `?order_by=` is absent or not allow-listed. |
