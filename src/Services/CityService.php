@@ -14,7 +14,8 @@ class CityService extends SearchablePsgcService
         ?string $orderBy = null,
         ?string $sortBy = null,
         ?int $limit = null,
-        int $offset = 0
+        int $offset = 0,
+        ?int $page = null
     ): LengthAwarePaginator {
         return $this->paginateSearchable(
             $this->model,
@@ -23,7 +24,8 @@ class CityService extends SearchablePsgcService
             $orderBy,
             $sortBy,
             $limit,
-            $offset
+            $offset,
+            $page
         );
     }
 }

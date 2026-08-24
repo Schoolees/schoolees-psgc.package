@@ -104,6 +104,37 @@ GET /psgc/barangays?city_code=1380600000
 }
 ```
 
+**Pagination response mode**
+
+`response_format` decides the envelope. The example above is the default `datatable` shape; setting it to `pagination` returns the generic Laravel resource payload instead, with the same `filters` echo:
+
+```json
+{
+  "data": [ { "code": "1380600000", "name": "City of Manila" } ],
+  "meta": { "current_page": 1, "per_page": 10, "total": 1 },
+  "links": { "first": "...", "last": "...", "prev": null, "next": null },
+  "filters": { "code": "1380600000" }
+}
+```
+
+Errors answer as `{"code": <status>, "error": "<message>"}`. A 5xx message is replaced with `Server Error` unless `app.debug` is on, so an internal exception is never echoed to an API caller.
+
+**Paging through results**
+
+| Parameter | Meaning |
+| --- | --- |
+| `limit` | Rows per page. Defaults to `psgc.paginate`, capped by `psgc.max_limit`. |
+| `page` | 1-based page number. Takes precedence over `offset`. |
+| `offset` | Row offset, honoured exactly — `?limit=10&offset=5` starts at the 6th row. |
+
+The `links` emitted in `pagination` mode are page-based and can be followed directly:
+
+```php
+GET /psgc/barangays?limit=25          // rows 1-25
+GET /psgc/barangays?limit=25&page=2   // rows 26-50
+GET /psgc/barangays?limit=25&offset=5 // rows 6-30
+```
+
 **Filtering and Searching**
 
 You can filter results by passing query parameters. Refer to the `getSearchable()` method on each model for available filterable fields.
@@ -119,6 +150,13 @@ GET /psgc/cities?name=Manila
 ```
 
 `query_like` filters use SQL `LIKE` under the hood, but `%` and `_` in your search value are escaped and matched literally — they are not treated as wildcards.
+
+Filter semantics:
+
+- **Filters combine with `AND`.** Adding a parameter always narrows the result set, never widens it — `?name=Bacarra&city_class=CC` matches rows that satisfy both.
+- **Blank parameters are ignored.** `?code=` is treated as "no filter", so an unfilled form field does not zero out the results.
+- **Booleans accept the usual spellings.** For a boolean-cast column such as `is_city`, any of `true`/`false`/`1`/`0`/`yes`/`no` work. A value that is not a recognisable boolean is ignored rather than guessed at.
+- **Array and unrecognised parameters are ignored.** `?name[]=a&name[]=b` and `?bogus=1` are dropped rather than erroring.
 
 ## 🔍 Searchable Fields
 Each model has a `getSearchable()` method to define searchable columns for filtering via API.
@@ -139,12 +177,15 @@ The package follows the Service-Controller-Resource pattern for clean, maintaina
 
 **Example:**
 ```php
+use Schoolees\Psgc\Support\QueryOptions;
+
 $results = $this->cityService->getCities(
-    request()->all(),
-    request()->input('order_by', 'name'),
-    request()->input('sort_by', 'desc'),
-    request()->input('limit', 10),
-    request()->input('offset', 0)
+    request()->all(),                                       // filters
+    QueryOptions::stringOrNull(request()->input('order_by')),
+    QueryOptions::stringOrNull(request()->input('sort_by')),
+    QueryOptions::intOrNull(request()->input('limit')),
+    QueryOptions::intOrNull(request()->input('offset')) ?? 0,
+    QueryOptions::intOrNull(request()->input('page'))
 );
 ```
 
@@ -163,17 +204,22 @@ PSGC_API_PREFIX=geo # Will change /psgc/regions to /geo/regions.
 'register_package_routes' => false,
 ```
 
-**Pagination safety override:**
-```php
-// config/psgc.php
-'max_limit' => 100, // caps ?limit=...
-```
+**Configuration reference (`config/psgc.php`):**
 
-**Response format override:**
-```php
-// config/psgc.php
-'response_format' => 'datatable', // or 'pagination'
-```
+| Key | Default | What it does |
+| --- | --- | --- |
+| `api_prefix` | `psgc` | URL prefix for every route (`PSGC_API_PREFIX`). |
+| `middleware` | `['api']` | Middleware applied to the package's route group. |
+| `register_package_routes` | `true` | Set to `false` when using published `routes/psgc.php`, to avoid duplicates. |
+| `append_include_on_publish` | `false` | Whether `psgc:publish-routes` appends the include to `routes/web.php`. |
+| `response_format` | `datatable` | `datatable` or `pagination` (see above). |
+| `paginate` | `10` | Default page size. |
+| `max_limit` | `100` | Caps `?limit=`. |
+| `order_by` | `name` | Default sort column, used when `?order_by=` is absent or not allow-listed. |
+| `sort_by` | `asc` | Default sort direction (`asc` or `desc`). |
+| `tables` | region/province/city/barangay names | Table names, if yours differ. |
+| `resources_path` | `base_path('resources/psgc')` | Where the JSON dataset is read from when seeding. |
+| `truncate_before_seed` | `true` | Whether a seed empties the tables first. |
 
 ## 📜 License
 This package is open-sourced software licensed under the MIT license.

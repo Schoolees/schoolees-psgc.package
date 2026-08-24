@@ -57,6 +57,21 @@ final class QueryOptions
         return max(0, (int) $offset);
     }
 
+    /**
+     * Resolve the row offset to start from.
+     *
+     * `page` wins when supplied so that the paginator's own `links` are
+     * followable; `offset` is honoured exactly, not rounded to a page boundary.
+     */
+    public static function resolveOffset(?int $page, ?int $offset, int $limit): int
+    {
+        if ($page !== null && $page > 0) {
+            return ($page - 1) * max(1, $limit);
+        }
+
+        return self::normalizeOffset((int) ($offset ?? 0));
+    }
+
     public static function pageFromOffset(int $offset, int $limit): int
     {
         if ($limit <= 0) {
@@ -64,6 +79,32 @@ final class QueryOptions
         }
 
         return intdiv(max(0, $offset), $limit) + 1;
+    }
+
+    /**
+     * Read a query parameter as an int, or null when it is absent, blank,
+     * non-numeric, or an array (e.g. `?limit[]=5`).
+     */
+    public static function intOrNull(mixed $value): ?int
+    {
+        if (! is_scalar($value) || $value === '' || ! is_numeric($value)) {
+            return null;
+        }
+
+        return (int) $value;
+    }
+
+    /**
+     * Read a query parameter as a string, or null when it is absent or an array
+     * (e.g. `?order_by[]=name`), which would otherwise be a TypeError.
+     */
+    public static function stringOrNull(mixed $value): ?string
+    {
+        if (! is_scalar($value)) {
+            return null;
+        }
+
+        return (string) $value;
     }
 
     /**
